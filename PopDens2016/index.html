@@ -2,7 +2,7 @@
 <html>
 <head>
    
-    <title>Population Change in the Greater Golden Horseshoe (Greater Toronto Area) from 2011 to 2016</title>   
+    <title>Population Density in the Greater Golden Horseshoe (Greater Toronto Area), 2016</title>   
     
 <!--Meta Tags-->
     
@@ -12,10 +12,10 @@
     
     <!--Open Graph Meta Tags-->
     
-    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/22851057/1a359db4-efe5-11e6-8398-1a26b6a8de04.png?format=750w"/>
-    <meta property="og:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016"/>
+    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/22857149/b3bcc416-f06d-11e6-863b-8adf9c1b9aa4.png"/>
+    <meta property="og:title" content="Population Density in the Greater Golden Horseshoe, 2016"/>
     <meta property="og:type" content="article"/>
-    <meta property="og:url" content="http://www.mapto.ca/maps/2017/2/7/popchange2016" />
+    <meta property="og:url" content="http://www.mapto.ca/maps/popdens2016" />
    
 
 <!-------------------------------------Twitter Cards------------------------------------------------------------>
@@ -23,9 +23,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@teedubolya">
     <meta name="twitter:creator" content="@teedubolya">
-    <meta name="twitter:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016">
+    <meta name="twitter:title" content="Population Density in the Greater Golden Horseshoe, 2016">
     <meta name="twitter:description" content="Mapping the 2016 census">
-    <meta name="twitter:image" content="https://static1.squarespace.com/static/5710598dd210b8402adfb5bc/571059df7c65e4375ac8b65f/589a9ca2d1758eaba27ac0f0/1486785497934/Screen+Shot+2017-02-10+at+10.41.44+PM.png?format=750w">
+    <meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/8647754/22857149/b3bcc416-f06d-11e6-863b-8adf9c1b9aa4.png?format=750w">
 
 <!--Style Sources-->    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
@@ -190,7 +190,7 @@ map.addSource('population', {
       'source-layer':'GGH_DB2016-0laic1',
       'paint':{
         'fill-extrusion-color':{
-            "stops": [[0,'#160e23'],[80,'#00617f'],[160,'#55e9ff'],[200,'#99ffff']],                       "property": "PPL_HA"},
+            "stops": [[0,'#160e23'],[80,'#00617f'],[160,'#55e9ff'],[200,'#99ffff']],"property": "PPL_HA"},
        
         'fill-extrusion-height':{
             "property": "PPL_HA",
