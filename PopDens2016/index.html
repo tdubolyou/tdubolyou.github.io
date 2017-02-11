@@ -137,7 +137,7 @@
    
     <div id='sidebar'>
         <h1>Population Density in the Greater Golden Horseshoe, 2016 </h1>
-        <h2>Dissemination Blocks</h2>
+        <h2>Dissemination Areas</h2>
         <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
         <p id='text'>By: <a href=http://twitter.com/teedubolya target="_blank">Tom Weatherburn</a> and <a href=http://twitter.com/willy_maps target="_blank">William Davis</a><br><br>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
             
@@ -150,15 +150,14 @@
           
         
            
-            <!--<div class='legend'>
-                <h4>Population Change (%)</h4>
-                <div><span style='background-color: #253494'></span>20% or greater</div>
-                <div><span style='background-color: #2c7fb8'></span>10% to 20%</div>
-                <div><span style='background-color: #41b6c4'></span>5% to 10%</div>
-                <div><span style='background-color: #a1dab4'></span>0 to 5%</div>
-                <div><span style='background-color: #f4a582'></span>0% to -3%</div>
-                <div><span style='background-color: #ca0020'></span>-3% or less</div>
-            </div>-->
+            <div class='legend'>
+                <h4>Population Density (ppl/Ha)</h4>
+                <div><span style='background-color: #99ffff'></span>200 or greater</div>
+                <div><span style='background-color: #55e9ff'></span>160 to 200</div>
+                <div><span style='background-color: #00617f'></span>80 to 160</div>
+                <div><span style='background-color: #160e23'></span>0 to 80</div>
+                
+            </div>
     </div>
 
 <!--JS-->
@@ -191,15 +190,15 @@ map.addSource('population', {
       'source-layer':'GGH_DB2016-0laic1',
       'paint':{
         'fill-extrusion-color':{
-            "stops": [[0,'#160e23'],[50,'#00617f'], [80,'#55e9ff'],[150,'#55e9ff'],[200,'#ffffcc']],                       "property": "PPL_HA"},
+            "stops": [[0,'#160e23'],[80,'#00617f'],[160,'#55e9ff'],[200,'#99ffff']],                       "property": "PPL_HA"},
        
         'fill-extrusion-height':{
             "property": "PPL_HA",
             "type": "identity"},
-        'fill-extrusion-opacity':0.5
+        'fill-extrusion-opacity':0.6
       }
      
-})
+}, 'airport-label')
 });
 map.on('mousemove', function (e) {
             var features = map.queryRenderedFeatures(e.point, {
@@ -245,9 +244,9 @@ map.on('load', function() {
                 'type': 'identity',
                 'property': 'min_height'
             },
-            'fill-extrusion-opacity': .8
+            'fill-extrusion-opacity': .5
         }
-    });
+    },'population');
 });
 
 </script>
