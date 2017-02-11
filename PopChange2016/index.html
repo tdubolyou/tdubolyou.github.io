@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
+   
+    <title>Population Change in the Greater Golden Horseshoe (Greater Toronto Area) from 2011 to 2016</title>   
+    
+<!--Meta Tags-->
+    
     <meta charset='utf-8' />
-    <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/8647754/10562193/c781d84c-751c-11e5-9b53-2c87db31182e.png">
+    
+    <!--Open Graph Meta Tags-->
+    
+    <meta property="og:image" content="https://static1.squarespace.com/static/5710598dd210b8402adfb5bc/571059df7c65e4375ac8b65f/589a9ca2d1758eaba27ac0f0/1486785497934/Screen+Shot+2017-02-10+at+10.41.44+PM.png?format=750w"/>
+    <meta property="og:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="http://www.mapto.ca/maps/2017/2/7/popchange2016" />
+   
+
+<!-------------------------------------Twitter Cards------------------------------------------------------------>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@teedubolya">
+    <meta name="twitter:creator" content="@teedubolya">
+    <meta name="twitter:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016">
+    <meta name="twitter:description" content="Mapping the 2016 census">
+    <meta name="twitter:image" content="https://static1.squarespace.com/static/5710598dd210b8402adfb5bc/571059df7c65e4375ac8b65f/589a9ca2d1758eaba27ac0f0/1486785497934/Screen+Shot+2017-02-10+at+10.41.44+PM.png?format=750w">
+
+<!--Style Sources-->    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
     <script src="https://use.typekit.net/pig7gwg.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    
+<!--CSS-->
+    
     <style>
         body { 
             margin:0; 
@@ -68,12 +95,9 @@
             margin-right: 5px;
             width: 1vw;
             height: 1vw;
-            
-                        }
-        
-        
+            }
+
         #tooltip {
-           
             font-size:calc(4px + 1.25vw);
             margin-bottom:5%;
             }
@@ -88,20 +112,24 @@
             color: #969696;
             font-size:calc(2px + 1.2vw);
         }
+        
         a{
            font-family: proxima-nova, sans-serif; 
             color: #808080;
             font-size:calc(2px + .9vw);
         }
+        
         #text{
             font-family: proxima-nova;
             font-size:calc(2px + .9vw);
             margin-top:2%;
-           
-        }
-             
+        }     
     </style>
 </head>
+
+    
+<!--HTML-->
+    
 <body>
 
 <div id='map'></div>
@@ -110,7 +138,7 @@
     <div id='sidebar'>
         <h1>Population Change in the Greater Golden Horseshoe, 2011-2016 </h1>
         <h2>Census Tracts</h2>
-        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm>Source: Statistics Canada, 2016</a></p>
+        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
         <p id='text'>By: <a href=http://twitter.com/teedubolya target="_blank">Tom Weatherburn</a> and <a href=http://twitter.com/willy_maps target="_blank">William Davis</a><br><br>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
             
             <div id='tooltip'></div>
@@ -131,12 +159,11 @@
                 <div><span style='background-color: #ca0020'></span>-3% or less</div>
             </div>
     </div>
-    
-   
-    
 
-    
+<!--JS-->
+   
 <script>
+    
 mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
 var map = new mapboxgl.Map({
     container: 'map', // container id
@@ -233,15 +260,7 @@ map.on('load', function() {
     });
 });
 
-
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-68929975-2', 'auto');
-  ga('send', 'pageview');
-
 </script>
+
 </body>
 </html>
