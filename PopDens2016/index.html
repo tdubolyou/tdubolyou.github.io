@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Population Change in the Greater Golden Horseshoe (Greater Toronto Area) from 2011 to 2016</title>   
+    
+<!--Meta Tags-->
+    
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/8647754/10562193/c781d84c-751c-11e5-9b53-2c87db31182e.png">
+    
+    <!--Open Graph Meta Tags-->
+    
+    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/22851057/1a359db4-efe5-11e6-8398-1a26b6a8de04.png?format=750w"/>
+    <meta property="og:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="http://www.mapto.ca/maps/2017/2/7/popchange2016" />
+   
+
+<!-------------------------------------Twitter Cards------------------------------------------------------------>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@teedubolya">
+    <meta name="twitter:creator" content="@teedubolya">
+    <meta name="twitter:title" content="Population Change in the Greater Golden Horseshoe, 2011 to 2016">
+    <meta name="twitter:description" content="Mapping the 2016 census">
+    <meta name="twitter:image" content="https://static1.squarespace.com/static/5710598dd210b8402adfb5bc/571059df7c65e4375ac8b65f/589a9ca2d1758eaba27ac0f0/1486785497934/Screen+Shot+2017-02-10+at+10.41.44+PM.png?format=750w">
+
+<!--Style Sources-->    
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
+    <script src="https://use.typekit.net/pig7gwg.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    
+<!--CSS-->
+    
+    <style>
+        body { 
+            margin:0; 
+            padding:0; 
+        }
+        #map { 
+            position:absolute; 
+            top:0; 
+            bottom:0; 
+            width:100%; 
+            }
+         
+
+    
+         #sidebar {
+            position: absolute;
+            top: 0;
+            left: 1%;
+            
+            width: 20%;
+            overflow: auto;
+            background: rgba(37, 37, 37, .95);
+            font-family: proxima-nova, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            padding: 1%;
+            color: #f6f6f6
+            }
+         h1{
+            font-size:calc(6px + 1.5vw);
+        }
+        
+        h2{
+             font-size:calc(4.5px + 1.2vw);
+            margin-bottom:-2%;
+        }
+        .legend {
+            color: #f6f6f6;
+            background-color: #333333;
+            border-radius: 3px;
+            left: 10%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font-family: proxima-nova, sans-serif;
+            font-size:calc(3px + 1vw);
+            padding: 5%;
+            margin-top:10%;
+           
+            }
+
+        .legend h4 {
+            margin: 0 0 10px;
+            }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            width: 1vw;
+            height: 1vw;
+            }
+
+        #tooltip {
+            font-size:calc(4px + 1.25vw);
+            margin-bottom:5%;
+            }
+        
+        #tooltip2, #tooltip3, #tooltip4{
+            color:#969696;
+            font-size:calc(2px + 1.1vw);
+        }
+        
+        #tooltip-name{
+            margin-top:3%;
+            color: #969696;
+            font-size:calc(2px + 1.2vw);
+        }
+        
+        a{
+           font-family: proxima-nova, sans-serif; 
+            color: #808080;
+            font-size:calc(2px + .9vw);
+        }
+        
+        #text{
+            font-family: proxima-nova;
+            font-size:calc(2px + .9vw);
+            margin-top:2%;
+        }     
+    </style>
+</head>
+
+    
+<!--HTML-->
+    
+<body>
+
+<div id='map'></div>
+
+   
+    <div id='sidebar'>
+        <h1>Population Density in the Greater Golden Horseshoe, 2016 </h1>
+        <h2>Dissemination Blocks</h2>
+        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
+        <p id='text'>By: <a href=http://twitter.com/teedubolya target="_blank">Tom Weatherburn</a> and <a href=http://twitter.com/willy_maps target="_blank">William Davis</a><br><br>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
+            
+            <div id='tooltip'></div>
+            <div id='tooltip2'></div>
+            <div id='tooltip3'></div>
+            <div id='tooltip4'></div>
+            <div id="tooltip-name"></div>
+            
+          
+        
+           
+            <!--<div class='legend'>
+                <h4>Population Change (%)</h4>
+                <div><span style='background-color: #253494'></span>20% or greater</div>
+                <div><span style='background-color: #2c7fb8'></span>10% to 20%</div>
+                <div><span style='background-color: #41b6c4'></span>5% to 10%</div>
+                <div><span style='background-color: #a1dab4'></span>0 to 5%</div>
+                <div><span style='background-color: #f4a582'></span>0% to -3%</div>
+                <div><span style='background-color: #ca0020'></span>-3% or less</div>
+            </div>-->
+    </div>
+
+<!--JS-->
+   
+<script>
+    
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/tweatherburn/ciyvwcqax005c2rplwgmx8b1u', //stylesheet location
+    center: [-79.39,43.69], // starting position
+    zoom: 10, // starting zoom
+    pitch: 45,
+    minZoom: 6,
+    maxZoom:16,
+
+});
+    
+map.on('load', function(){
+
+    //set up data sources
+map.addSource('population', {
+      'type':'vector',
+      'url':'mapbox://tweatherburn.7lr7qrqx'
+    })
+.addLayer({
+    	'id':'extrusions',
+      'type':'fill-extrusion',
+      'source':'population',
+      'source-layer':'GGH_DB2016-0laic1',
+      'paint':{
+        'fill-extrusion-color':{
+            "stops": [[0,'#160e23'],[50,'#00617f'], [80,'#55e9ff'],[150,'#55e9ff'],[200,'#ffffcc']],                       "property": "PPL_HA"},
+       
+        'fill-extrusion-height':{
+            "property": "PPL_HA",
+            "type": "identity"},
+        'fill-extrusion-opacity':0.5
+      }
+     
+})
+});
+map.on('mousemove', function (e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['extrusions']
+            });
+
+            if (features.length) {
+                //show name and value in sidebar
+                document.getElementById('tooltip-name').innerHTML = "Municipality: " + features[0].properties.CSDNAME;
+                document.getElementById('tooltip').innerHTML = 'Population Density: ' + Math.round(features[0].properties.PPL_HA) +' Ppl/Ha';
+                document.getElementById('tooltip2').innerHTML = 'Population 2016: ' + features[0].properties.DBpop2016;
+                document.getElementById('tooltip3').innerHTML = 'Dwellings 2016: ' + features[0].properties.DBtdwell20;
+                document.getElementById('tooltip4').innerHTML = 'People per Unit: ' + features[0].properties.DBtdwell20;
+                
+                //for troubleshooting - show complete features info
+                //document.getElementById('tooltip').innerHTML = JSON.stringify(features, null, 2);
+            } else {
+                //if not hovering over a feature set tooltip to empty
+                document.getElementById('tooltip-name').innerHTML = "";
+                document.getElementById('tooltip').innerHTML = "";
+                document.getElementById('tooltip2').innerHTML = "";
+                document.getElementById('tooltip3').innerHTML = "";
+                
+            };
+            
+        });
+    
+map.on('load', function() {
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+            'fill-extrusion-color': '#333',
+            'fill-extrusion-height': {
+                'type': 'identity',
+                'property': 'height'
+            },
+            'fill-extrusion-base': {
+                'type': 'identity',
+                'property': 'min_height'
+            },
+            'fill-extrusion-opacity': .8
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>
