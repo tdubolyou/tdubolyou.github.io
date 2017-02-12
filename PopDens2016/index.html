@@ -164,7 +164,7 @@
    
 <script>
     
-mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+mapboxgl.accessToken = 'pk.eyJ1IjoicG9wZGVuc2l0eSIsImEiOiJjaXoyeGV3eTgwNG8yMzNuMWE5cHBmeTduIn0.IFBpk5Cej9PB0z-j76VgGQ';
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/mapbox/dark-v9', //stylesheet location
@@ -181,13 +181,13 @@ map.on('load', function(){
     //set up data sources
 map.addSource('population', {
       'type':'vector',
-      'url':'mapbox://tweatherburn.7lr7qrqx'
+      'url':'mapbox://popdensity.4rrxpu3y'
     })
 .addLayer({
     	'id':'extrusions',
       'type':'fill-extrusion',
       'source':'population',
-      'source-layer':'GGH_DB2016-0laic1',
+      'source-layer':'GGH_DA2016-aajzzz',
       'paint':{
         'fill-extrusion-color':{
             "stops": [[0,'#160e23'],[80,'#00617f'],[160,'#55e9ff'],[200,'#99ffff']],"property": "PPL_HA"},
