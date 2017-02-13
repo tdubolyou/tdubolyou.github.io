@@ -164,7 +164,7 @@
    
 <script>
     
-//mapboxgl.accessToken = 'pk.eyJ1IjoicG9wY2hhbmdlMjAxNiIsImEiOiJjaXo0ODdoeHQwNWl1MzNxdzg2YmxuanV0In0.aRuubCBKwoRhvEvVJQ3ahA';
+mapboxgl.accessToken = 'pk.eyJ1IjoicG9wY2hhbmdlMjAxNiIsImEiOiJjaXo0ODdoeHQwNWl1MzNxdzg2YmxuanV0In0.aRuubCBKwoRhvEvVJQ3ahA';
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/popchange2016/ciz48iv0200442rqbq0d4pzms', //stylesheet location
@@ -180,13 +180,13 @@ map.on('load', function(){
     //set up data sources
 map.addSource('population', {
       'type':'vector',
-      'url':'mapbox://popchange2016.a84umrb7'
+      'url':'mapbox://popchange2016.12ubpjke'
     })
 map.addLayer({
       'id':'population',
       'type':'fill',
       'source':'population',
-      'source-layer':'CT2016-a9ck3x',
+      'source-layer':'CT2016-8gwdxr',
       'layout': {
             'visibility': 'visible'
         },
