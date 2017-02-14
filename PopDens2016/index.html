@@ -164,15 +164,15 @@
    
 <script>
     
-mapboxgl.accessToken = 'pk.eyJ1IjoicG9wZGVuc2l0eSIsImEiOiJjaXoyeGV3eTgwNG8yMzNuMWE5cHBmeTduIn0.IFBpk5Cej9PB0z-j76VgGQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
 var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/popdensity/ciz2xu9bk00392rpldmafq7bc', //stylesheet location
+    style: 'mapbox://styles/tweatherburn/ciuk4y6bf005t2imlesdmmtf6', //stylesheet location
     center: [-79.39,43.69], // starting position
     zoom: 10, // starting zoom
     pitch: 45,
     minZoom: 10,
-    maxZoom:12,
+    maxZoom:16,
 
 });
     
@@ -181,13 +181,13 @@ map.on('load', function(){
     //set up data sources
 map.addSource('population', {
       'type':'vector',
-      'url':'mapbox://popdensity.4rrxpu3y'
+      'url':'mapbox://tweatherburn.d5q5w2kv'
     })
 .addLayer({
     	'id':'extrusions',
       'type':'fill-extrusion',
       'source':'population',
-      'source-layer':'GGH_DA2016-aajzzz',
+      'source-layer':'GGH_DA2016-0bs2c8',
       'paint':{
         'fill-extrusion-color':{
             "stops": [[0,'#160e23'],[80,'#00617f'],[160,'#55e9ff'],[200,'#99ffff']],"property": "PPL_HA"},
