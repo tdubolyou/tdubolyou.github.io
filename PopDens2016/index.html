@@ -209,8 +209,8 @@ map.on('mousemove', function (e) {
                 //show name and value in sidebar
                 document.getElementById('tooltip-name').innerHTML = "Municipality: " + features[0].properties.CSDNAME;
                 document.getElementById('tooltip').innerHTML = 'Population Density: ' + Math.round(features[0].properties.PPL_HA) +' Ppl/Ha';
-                document.getElementById('tooltip2').innerHTML = 'Population 2016: ' + features[0].properties.DBpop2016;
-                document.getElementById('tooltip3').innerHTML = 'Dwellings 2016: ' + features[0].properties.DBtdwell20;
+                document.getElementById('tooltip2').innerHTML = 'Population 2016: ' + features[0].properties.DAtdwell20;
+                document.getElementById('tooltip3').innerHTML = 'Dwellings 2016: ' + features[0].properties.DAurdwell2;
                 document.getElementById('tooltip4').innerHTML = 'People per Unit: ' + features[0].properties.PPU;
                 
                 //for troubleshooting - show complete features info
