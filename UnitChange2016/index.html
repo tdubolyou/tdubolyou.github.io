@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Change in Housing Units in the Greater GOlden Horseshoe, 2011 to 2016</title>   
+    
+<!--Meta Tags-->
+    
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/8647754/10562193/c781d84c-751c-11e5-9b53-2c87db31182e.png">
+    
+    <!--Open Graph Meta Tags-->
+    
+    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/22851057/1a359db4-efe5-11e6-8398-1a26b6a8de04.png?format=750w"/>
+    <meta property="og:title" content="Change in Housing Units in the Greater Golden Horseshoe, 2011 to 2016"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content= />
+   
+
+<!-------------------------------------Twitter Cards------------------------------------------------------------>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@teedubolya">
+    <meta name="twitter:creator" content="@teedubolya">
+    <meta name="twitter:title" content="Change in Housing Units in the Greater Golden Horeseshoe, 2011 to 2016">
+    <meta name="twitter:description" content="We mappedhousing unit counts from 2011 and 2016 at the block level, within the residential zones of Toronto.  The data show....  ">
+    <meta name="twitter:image" content="IMAGE">
+
+<!--Style Sources-->    
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
+    <script src="https://use.typekit.net/pig7gwg.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    
+<!--CSS-->
+    
+    <style>
+        body { 
+            margin:0; 
+            padding:0; 
+        }
+        #map { 
+            position:absolute; 
+            top:0; 
+            bottom:0; 
+            width:100%; 
+            z-index: -1}
+         
+
+    
+         #sidebar {
+            position: absolute;
+            top: 0;
+            left: 1%;
+            
+            width: 20%;
+            overflow: auto;
+            background: rgba(37, 37, 37, .95);
+            font-family: proxima-nova, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            padding: 1%;
+            color: #f6f6f6
+            }
+         h1{
+            font-size:calc(6px + 1.5vw);
+        }
+        
+        h2{
+             font-size:calc(4.5px + 1.2vw);
+            margin-bottom:-2%;
+        }
+        .legend {
+            color: #f6f6f6;
+            background-color: #333333;
+            border-radius: 3px;
+            left: 10%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font-family: proxima-nova, sans-serif;
+            font-size:calc(3px + 1vw);
+            padding: 5%;
+            margin-top:10%;
+           
+            }
+
+        .legend h4 {
+            margin: 0 0 10px;
+            }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            width: 1vw;
+            height: 1vw;
+            }
+
+        #tooltip {
+            font-size:calc(4px + 1.25vw);
+            margin-bottom:5%;
+            }
+        
+        #tooltip2, #tooltip3{
+            color:#969696;
+            font-size:calc(2px + 1.1vw);
+        }
+        
+        #tooltip-name{
+            margin-top:3%;
+            color: #969696;
+            font-size:calc(2px + 1.2vw);
+        }
+        
+        a{
+           font-family: proxima-nova, sans-serif; 
+            color: #808080;
+            font-size:calc(2px + .9vw);
+        }
+        
+        #text{
+            font-family: proxima-nova;
+            font-size:calc(2px + .9vw);
+            margin-top:2%;
+        }
+        nav p{
+            color:#fff;
+            font-family: proxima-nova;
+            text-align: center;
+            
+        }
+         #menu {
+        background: rgba(10, 10, 10, .95);
+        position: absolute;
+        z-index: 1;
+        top: 1%;
+        right: 1%;
+        border-radius: 3px;
+        width:10%;
+        border: 1px solid rgba(0,0,0,0.4);
+        font-family: proxima-nova, sans-serif;
+    }
+
+    #menu a {
+        font-size: 13px;
+        color: #fff;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    #menu a:last-child {
+        border: none;
+    }
+
+    #menu a:hover {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    #menu a.active {
+        background-color: #787878;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #505050;
+    }
+    </style>
+</head>
+
+    
+<!--HTML-->
+    
+<body>
+
+<div id='map'></div>
+
+   
+    <div id='sidebar'>
+        <h1>Change in Housing Units in the Greater Golden Horseshoe, 2011-2016 </h1>
+        <h2>2011 Dissemination Blocks</h2>
+        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
+        <p id='text'>By: <a href=http://twitter.com/teedubolya target="_blank">Tom Weatherburn</a> and <a href=http://twitter.com/willy_maps target="_blank">William Davis</a><br><br>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
+            
+            <div id='tooltip'></div>
+            <div id='tooltip2'></div>
+            <div id='tooltip3'></div>
+            <div id="tooltip-name"></div>
+            
+          
+        
+           
+            <div class='legend'>
+                <h4>Change in Dwellings</h4>
+                <div><span style='background-color: #4575B5'></span>20 or greater</div>
+                <div><span style='background-color: #849EB9'></span>6 to 20</div>
+                <div><span style='background-color: #C0CCBE'></span>1 to 5</div>
+                <div><span style='background-color: #FFFFBF'></span>0 to 1</div>
+                <div><span style='background-color: #FAB884'></span>0% to -4</div>
+                <div><span style='background-color: #ED7552'></span>-5 or less</div>
+            </div>
+         <div class='legend'>
+                <h4>Residential Zones</h4>
+                
+                <div><span style='background-color: #ffff99'></span>Detached</div>
+                <div><span style='background-color: #f9f239'></span>Semi-Detached</div>
+             <div><span style='background-color: #C90'></span>Residential</div>
+                <div><span style='background-color: #804000'></span>Townhouse</div>
+                <div><span style='background-color: #4d3319'></span>Multiple Unit (Apartments)</div>
+            </div>
+    </div>
+    <nav id="menu"><p>Toggle Layers</p></nav>
+
+<!--JS-->
+   
+<script>
+    
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/tweatherburn/ciuk4y6bf005t2imlesdmmtf6', //stylesheet location
+    center: [-79.416,43.676], // starting position
+    zoom: 12, // starting zoom
+    minZoom: 6,
+    maxZoom:16,
+
+});
+    
+map.on('load', function(){
+
+//dissemination blocks - housing
+map.addSource('housing', {
+      'type':'vector',
+      'url':'mapbox://tweatherburn.7zs2t4rn'
+    });
+
+map.addLayer({
+      'id':'housing',
+      'type':'fill',
+      'source':'housing',
+      'source-layer':'PopDwel_11_16-ay08zc',
+      'layout': {
+            'visibility': 'visible'
+        },
+      'paint':{
+        'fill-color':{
+            "property": "Dwel_11_16",
+            'type':'interval',
+            "stops": [
+                [-10,'#ED7552'],
+                [-4,'#FAB884'],
+                [0,'#FFFFBF'],
+                [1,'#C0CCBE'],
+                [5,'#849EB9'],
+                [20,'#4575B5']
+            ], 
+        },
+        'fill-opacity':.8
+        
+      },
+      'paint.tilted':{
+      }
+    }, 'water');
+
+// residential zones
+map.addSource('zoning', {
+      'type':'vector',
+      'url':'mapbox://tweatherburn.cbqfc24m'
+    });
+    
+map.addLayer({
+      'id':'zoning',
+      'type':'fill',
+      'source':'zoning',
+      'source-layer':'TO_ResZones-27qtha',
+      'layout': {
+            'visibility': 'none'
+        },
+      'paint':{
+        'fill-color':{
+            "property": "ZN_ZONE",
+             type: 'categorical',
+                stops: [
+                    ['R', '#C90'],
+                    ['RD', '#ffff99'],
+                    ['RM', '#4d3319'],
+                    ['RS', '#f9f239'],
+                    ['RT', '#804000']
+            ], 
+        "property": "ZN_ZONE"},
+        'fill-opacity':.8
+        
+      },
+      'paint.tilted':{
+      }
+    }, 'water');
+
+});
+ 
+//toggle layers
+
+var toggleableLayerIds = ['zoning','housing' ];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+  
+map.on('mousemove', function (e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['housing']
+            });
+
+            if (features.length) {
+                //show name and value in sidebar
+                document.getElementById('tooltip-name').innerHTML = "Census Tract: " + features[0].properties.DBUID;
+                document.getElementById('tooltip').innerHTML = 'Change in Dwelling Units: ' + features[0].properties.Dwel_11_16;
+                document.getElementById('tooltip2').innerHTML = 'Dwelling Count 2016: ' + features[0].properties.Dwel2016;
+                document.getElementById('tooltip3').innerHTML = 'Dwelling Count 2011: ' + features[0].properties.TotDwel;
+                
+                
+                //for troubleshooting - show complete features info
+                //document.getElementById('tooltip').innerHTML = JSON.stringify(features, null, 2);
+            } else {
+                //if not hovering over a feature set tooltip to empty
+                document.getElementById('tooltip-name').innerHTML = "";
+                document.getElementById('tooltip').innerHTML = "";
+                document.getElementById('tooltip2').innerHTML = "";
+                document.getElementById('tooltip3').innerHTML = "";
+                
+            };
+            
+        });
+
+
+//Add 3d buildings on zoom to 15    
+map.on('load', function() {
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+            'fill-extrusion-color': '#969696',
+            'fill-extrusion-height': {
+                'type': 'identity',
+                'property': 'height'
+            },
+            'fill-extrusion-base': {
+                'type': 'identity',
+                'property': 'min_height'
+            },
+            'fill-extrusion-opacity': .8
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>
