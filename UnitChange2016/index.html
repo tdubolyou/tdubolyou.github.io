@@ -348,7 +348,7 @@ map.on('mousemove', function (e) {
 
             if (features.length) {
                 //show name and value in sidebar
-                document.getElementById('tooltip-name').innerHTML = "Census Tract: " + features[0].properties.DBUID;
+                document.getElementById('tooltip-name').innerHTML = "Dissemination Block ID: " + features[0].properties.DBUID;
                 document.getElementById('tooltip').innerHTML = 'Change in Dwelling Units: ' + features[0].properties.Dwel_11_16;
                 document.getElementById('tooltip2').innerHTML = 'Dwelling Count 2016: ' + features[0].properties.Dwel2016;
                 document.getElementById('tooltip3').innerHTML = 'Dwelling Count 2011: ' + features[0].properties.TotDwel;
