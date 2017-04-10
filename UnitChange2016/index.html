@@ -149,7 +149,7 @@
     }
 
     #menu a {
-        font-size: 13px;
+        font-size: 1 em;
         color: #fff;
         display: block;
         margin: 0;
@@ -177,6 +177,11 @@
     #menu a.active:hover {
         background: #505050;
     }
+        
+    #zoning {
+     display:none;
+}
+        
     </style>
 </head>
 
@@ -202,7 +207,7 @@
           
         
            
-            <div class='legend'>
+          <div class='legend' id="housing">
                 <h4>Change in Dwellings</h4>
                 <div><span style='background-color: #4575B5'></span>20 or greater</div>
                 <div><span style='background-color: #849EB9'></span>6 to 20</div>
@@ -211,32 +216,43 @@
                 <div><span style='background-color: #FAB884'></span>0% to -4</div>
                 <div><span style='background-color: #ED7552'></span>-5 or less</div>
             </div>
-         <div class='legend'>
+            <div class='legend' id="zoning">
                 <h4>Residential Zones</h4>
-                
-                <div><span style='background-color: #ffff99'></span>Detached</div>
-                <div><span style='background-color: #f9f239'></span>Semi-Detached</div>
-             <div><span style='background-color: #C90'></span>Residential</div>
-                <div><span style='background-color: #804000'></span>Townhouse</div>
-                <div><span style='background-color: #4d3319'></span>Multiple Unit (Apartments)</div>
+                <div><span style='background-color: #ffff99'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_20.htm" target=blank>Residential Detached Zone (RD)</a></div>
+                <div><span style='background-color: #f9f239'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_40.htm" target=blank>Residential Semi-Detached Zone (RS)</a></div>
+                <div><span style='background-color: #C90'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_10.htm" target=blank>Residential Zone (R)</a></div>
+                <div><span style='background-color: #804000'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_60.htm" target=blank>Residential Townhouse Zone ( RT)</a></div>
+                <div><span style='background-color: #4d3319'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_80.htm" target=blank>Residential Multiple Dwelling Zone (RM)</a></div>
             </div>
+
     </div>
-    <nav id="menu"><p>Toggle Layers</p></nav>
+    <nav id="menu"></nav>
 
 <!--JS-->
    
 <script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';   
+
+    var bounds = [
+    [-80.340961, 43.344633], // Southwest coordinates
+    [-78.537738, 43.958661]  // Northeast coordinates
+        ];
     
-mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/tweatherburn/ciuk4y6bf005t2imlesdmmtf6', //stylesheet location
     center: [-79.416,43.676], // starting position
     zoom: 12, // starting zoom
-    minZoom: 6,
-    maxZoom:16,
+    maxBounds: bounds,
+    maxZoom:17,
+    minZoom: 11
+    
+        
 
 });
+    
+
     
 map.on('load', function(){
 
@@ -321,19 +337,27 @@ for (var i = 0; i < toggleableLayerIds.length; i++) {
     link.className = 'active';
     link.textContent = id;
 
+    var legendname = link.textContent = id;
+    console.log(legendname);
+
     link.onclick = function (e) {
         var clickedLayer = this.textContent;
         e.preventDefault();
         e.stopPropagation();
 
+
         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        var legendid = document.getElementById(clickedLayer);
 
         if (visibility === 'visible') {
             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            legendid.style.display = "none";
             this.className = '';
         } else {
             this.className = 'active';
             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            legendid.style.display = "block";
         }
     };
 
