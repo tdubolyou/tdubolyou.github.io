@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Potential Flood Plains with Rising Lake Ontartio Levels</title>   
+    
+<!--Meta Tags-->
+    
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png">
+    
+    <!--Open Graph Meta Tags-->
+    
+    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png"/>
+    <meta property="og:title" content="Change in Housing Units in the Greater Golden Horseshoe, 2011 to 2016"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content= />
+   
+
+<!-------------------------------------Twitter Cards------------------------------------------------------------>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@teedubolya">
+    <meta name="twitter:creator" content="@teedubolya">
+    <meta name="twitter:title" content="Change in Housing Units in the Greater Golden Horeseshoe, 2011 to 2016">
+    <meta name="twitter:description" content="We mapped housing unit counts from 2011 and 2016 at the block level within the Greater Golden Horseshoe.  The map also shows the residential zones within the City of Toronto.">
+    <meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png">
+
+<!--Style Sources-->    
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
+    <script src="https://use.typekit.net/pig7gwg.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    
+<!--CSS-->
+    
+    <style>
+        body { 
+            margin:0; 
+            padding:0; 
+        }
+        #map { 
+            position:absolute; 
+            top:0; 
+            bottom:0; 
+            width:100%; 
+            z-index: -1}
+         
+
+    
+         #sidebar {
+            position: absolute;
+            top: 0;
+            left: 1%;
+            
+            width: 20%;
+            overflow: auto;
+            background: rgba(37, 37, 37, .95);
+            font-family: proxima-nova, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            padding: 1%;
+            color: #f6f6f6
+            }
+         h1{
+            font-size:calc(6px + 1.5vw);
+        }
+        
+        h2{
+             font-size:calc(4.5px + 1.2vw);
+            margin-bottom:-2%;
+            font-weight: 300;
+        }
+        h3{
+             font-size:calc(1px + 1.2vw);
+            margin-bottom:-2%;
+            font-weight: 200;
+        }
+        .legend {
+            color: #f6f6f6;
+            background-color: #333333;
+            border-radius: 3px;
+            left: 10%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font-family: proxima-nova, sans-serif;
+            font-size:calc(3px + 1vw);
+            padding: 5%;
+            margin-top:10%;
+           
+            }
+
+        .legend h4 {
+            margin: 0 0 10px;
+            }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            width: 1vw;
+            height: 1vw;
+            }
+
+        #tooltip {
+            font-size:calc(2px + 1.1vw);
+            margin-bottom:5%;
+            }
+        
+        #tooltip2, #tooltip3{
+            color:#969696;
+            font-size:calc(2px + 1vw);
+        }
+        
+        #tooltip-name{
+            margin-top:3%;
+            color: #969696;
+            font-size:calc(2px + 1vw);
+        }
+        
+        a{
+           font-family: proxima-nova, sans-serif; 
+            color: #808080;
+            font-size:calc(2px + .9vw);
+        }
+        
+        #text{
+            font-family: proxima-nova;
+            font-size:calc(2px + .9vw);
+            margin-top:2%;
+        }
+        nav p{
+            color:#fff;
+            font-family: proxima-nova;
+            text-align: center;
+            
+        }
+         #menu {
+        background: rgba(10, 10, 10, .95);
+        position: absolute;
+        z-index: 1;
+        top: 1%;
+        right: 1%;
+        border-radius: 3px;
+        width:10%;
+        border: 1px solid rgba(0,0,0,0.4);
+        font-family: proxima-nova, sans-serif;
+    }
+
+    #menu a {
+        font-size: 13px;
+        color: #fff;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    #menu a:last-child {
+        border: none;
+    }
+
+    #menu a:hover {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    #menu a.active {
+        background-color: #787878;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #505050;
+    }
+        
+    .map-overlay-inner {
+    background-color: #505050;
+    box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+        
+    .label {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+  }
+    </style>
+</head>
+
+    
+<!--HTML-->
+    
+<body>
+
+<div id='map'></div>
+
+   
+    <div id='sidebar'>
+        <h2>Shoreline Flooding Under Increased Water Levels in Lake Ontario</h2>
+        <h3>CM above sea level</h3>
+        <p><a href=https://www.ontario.ca/data/provincial-digital-elevation-model-version-30 target="_blank">Source: Ministry of Natural Resources and Forestry, Digital Elevation Model</a></p>
+        <p id='text'>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
+            
+        <div class='map-overlay-inner'>
+            <h2>Water Level (cm)</h2>
+            <h3> <label id='active-hour'>7590 CM</label></h3>
+            <input id='slider' type='range' min='7590' max='8800' step='10' value='0' /> 
+        </div>
+        
+        
+<!--JS-->
+
+<script> 
+    
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+    var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/tweatherburn/cj38a5qr0000d2sqsq3ouypss', //stylesheet location
+    center: [-79.416,43.676], // starting position
+    zoom: 12, // starting zoom
+    minZoom: 6,
+    maxZoom:20,
+    });
+
+map.on('load', function(){
+
+    
+// lake level - contours at 10 cm intervals from the water to the shore, up to 8800 CMASL
+map.addSource('lake', {
+    'type':'vector',
+    'url':'mapbox://tweatherburn.7pmd80q9'
+    });
+
+map.addLayer({
+    'id':'lake-lvl',
+    'type':'fill',
+    'source':'lake',
+    'source-layer':'TorontoElev_10cm_to8800_clipp-63ld85',
+    'layout': {
+        'visibility': 'visible'
+        },
+    'paint':{
+        'fill-color':'#99bbff',
+        'fill-opacity':.8
+        },
+    'paint.tilted':{
+        },
+    'filter': ['<=', 'Elev_CM', 7590]
+    }, 
+'water');
+
+});
+
+document.getElementById('slider').addEventListener('input', function(e) {
+      // get the current level as an integer
+      var level = parseInt(e.target.value);
+      // map.setFilter(layer-name, filter)
+      map.setFilter('lake-lvl', ['<=', 'Elev_CM', level]);
+//display current level above slider
+document.getElementById('active-hour').innerText = level + "cm";  
+
+});
+
+</script>
+</body>
+</html>
