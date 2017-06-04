@@ -8,14 +8,14 @@
     
     <meta charset='utf-8' />
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-   <link rel="shortcut icon" href="">
+   <link rel="shortcut icon" href="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png">
     
     <!--Open Graph Meta Tags-->
     
-    <meta property="og:image" content=""/>
-    <meta property="og:title" content=""/>
+    <meta property="og:image" content="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png"/>
+    <meta property="og:title" content="Change in Housing Units in the Greater Golden Horseshoe, 2011 to 2016"/>
     <meta property="og:type" content="article"/>
-    <meta property="og:url" content= ""/>
+    <meta property="og:url" content= />
    
 
 <!-------------------------------------Twitter Cards------------------------------------------------------------>
@@ -23,9 +23,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@teedubolya">
     <meta name="twitter:creator" content="@teedubolya">
-    <meta name="twitter:title" content="">
-    <meta name="twitter:description" content="">
-    <meta name="twitter:image" content="">
+    <meta name="twitter:title" content="Change in Housing Units in the Greater Golden Horeseshoe, 2011 to 2016">
+    <meta name="twitter:description" content="We mapped housing unit counts from 2011 and 2016 at the block level within the Greater Golden Horseshoe.  The map also shows the residential zones within the City of Toronto.">
+    <meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/8647754/24841300/a71a7bfe-1d4f-11e7-8210-ee07ee64f597.png">
 
 <!--Style Sources-->    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
@@ -181,9 +181,9 @@
     .map-overlay-inner {
     background-color: #505050;
     box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
-    border-radius: 3px;
-    padding: 10px;
-    margin-bottom: 10px;
+    border-radius: 1%;
+    padding: 5%;
+    margin-bottom: 5%;
 }
         
     .label {
@@ -191,6 +191,12 @@
     display: inline-block;
     text-align: center;
   }
+        
+        #slider {
+            width: 90%;
+        }
+        
+        
     </style>
 </head>
 
@@ -203,15 +209,15 @@
 
    
     <div id='sidebar'>
-        <h2>Shoreline Flooding Under Increased Lake Ontario Water Levels</h2>
-        <h3>Centimetres above sea level</h3>
+        <h2>Shoreline Flooding Under Increased Water Levels in Lake Ontario</h2>
+        <h3>CM above sea level</h3>
         <p><a href=https://www.ontario.ca/data/provincial-digital-elevation-model-version-30 target="_blank">Source: Ministry of Natural Resources and Forestry, Digital Elevation Model</a></p>
         <p id='text'>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
             
         <div class='map-overlay-inner'>
             <h2>Water Level (cm)</h2>
-            <h3> <label id='active-hour'>7500 CM</label></h3>
-            <input id='slider' type='range' min='7500' max='8800' step='10' value='0' /> 
+            <h3> <label id='active-hour'>7550 CM</label></h3>
+            <input id='slider' type='range' min='7550' max='8000' step='10' value='0' /> 
         </div>
         
         
@@ -222,7 +228,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
     var map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/tweatherburn/cj38a5qr0000d2sqsq3ouypss', //stylesheet location
+    style: 'mapbox://styles/mapbox/basic-v9', //stylesheet location
     center: [-79.354,43.634], // starting position
     zoom: 12.4, // starting zoom
     minZoom: 6,
@@ -235,24 +241,24 @@ map.on('load', function(){
 // lake level - contours at 10 cm intervals from the water to the shore, up to 8800 CMASL
 map.addSource('lake', {
     'type':'vector',
-    'url':'mapbox://tweatherburn.7pmd80q9'
+    'url':'mapbox://tweatherburn.dn95hgpm'
     });
 
 map.addLayer({
     'id':'lake-lvl',
     'type':'fill',
     'source':'lake',
-    'source-layer':'TorontoElev_10cm_to8800_clipp-63ld85',
+    'source-layer':'TorontoElev_10cm_Poly_to9000-c3lh8l',
     'layout': {
         'visibility': 'visible'
         },
     'paint':{
-        'fill-color':'#99bbff',
+        'fill-color':'#a0cfdf',
         'fill-opacity':.8
         },
     'paint.tilted':{
         },
-    'filter': ['<=', 'Elev_CM', 7500]
+    'filter': ['<=', 'Elev_CM', 7550]
     }, 
 'water');
 
