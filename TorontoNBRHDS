@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <title>Toronto Fruit Trees by Neighbourhood</title>   
+    
+<!--Meta Tags-->
+    
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   <link rel="shortcut icon" href="">
+    
+    <!--Open Graph Meta Tags-->
+    
+    <meta property="og:image" content=""/>
+    <meta property="og:title" content="Fruit Trees by Neighbourhood"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content= />
+   
+
+<!-------------------------------------Twitter Cards------------------------------------------------------------>
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@teedubolya">
+    <meta name="twitter:creator" content="@teedubolya">
+    <meta name="twitter:title" content="Toronto Fruit Trees by Neighbourhood">
+    <meta name="twitter:description" content="Toronto Fruit Trees by Neighbourhood">
+    <meta name="twitter:image" content="Toronto Fruit Trees by Neighbourhood">
+
+<!--Style Sources-->    
+   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
+    <script src="https://use.typekit.net/pig7gwg.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    
+<!--CSS-->
+    
+    <style>
+        body { 
+            margin:0; 
+            padding:0; 
+        }
+        #map { 
+            position:absolute; 
+            top:0; 
+            bottom:0; 
+            width:100%; 
+            z-index: -1}
+         
+
+    
+         #sidebar {
+            position: absolute;
+            top: 0;
+            left: 1%;
+            
+            width: 20%;
+            overflow: auto;
+            background: rgba(37, 37, 37, .95);
+            font-family: proxima-nova, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+            padding: 1%;
+            color: #f6f6f6
+            }
+         h1{
+            font-size:calc(6px + 1.5vw);
+        }
+        
+        h2{
+             font-size:calc(4.5px + 1.2vw);
+            margin-bottom:-2%;
+            font-weight: 300;
+        }
+        h3{
+             font-size:calc(1px + 1.2vw);
+            margin-bottom:-2%;
+            font-weight: 200;
+        }
+        .legend {
+            color: #f6f6f6;
+            background-color: #333333;
+            border-radius: 3px;
+            left: 10%;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font-family: proxima-nova, sans-serif;
+            font-size:calc(3px + 1vw);
+            padding: 5%;
+            margin-top:10%;
+           
+            }
+
+        .legend h4 {
+            margin: 0 0 10px;
+            }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            width: 1vw;
+            height: 1vw;
+            }
+
+        #tooltip {
+            font-size:calc(2px + 1.1vw);
+            margin-bottom:5%;
+            }
+        
+        #tooltip2, #tooltip3{
+            color:#969696;
+            font-size:calc(2px + 1vw);
+        }
+        
+        #tooltip-name{
+            margin-top:3%;
+            color: #969696;
+            font-size:calc(2px + 1vw);
+        }
+        
+        a{
+           font-family: proxima-nova, sans-serif; 
+            color: #808080;
+            font-size:calc(2px + .9vw);
+        }
+        
+        #text{
+            font-family: proxima-nova;
+            font-size:calc(2px + .9vw);
+            margin-top:2px;
+        }
+        nav p{
+            color:#fff;
+            font-family: proxima-nova;
+            text-align: center;
+            
+        }
+         #menu {
+        background: rgba(10, 10, 10, .95);
+        position: absolute;
+        z-index: 1;
+        top: 1%;
+        right: 1%;
+        border-radius: 3px;
+        width:10%;
+        border: 1px solid rgba(0,0,0,0.4);
+        font-family: proxima-nova, sans-serif;
+    }
+
+    #menu a {
+        font-size: 1 em;
+        color: #fff;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.25);
+        text-align: center;
+    }
+
+    #menu a:last-child {
+        border: none;
+    }
+
+    #menu a:hover {
+        background-color: #202020;
+        color: #fff;
+    }
+
+    #menu a.active {
+        background-color: #787878;
+        color: #ffffff;
+    }
+
+    #menu a.active:hover {
+        background: #505050;
+    }
+        
+    #zoning {
+     display:none;
+    }
+    #zoning a {
+            font-size: 0.9
+        }    
+    
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+    
+    
+    
+    </style>
+</head>
+
+    
+<!--HTML-->
+    
+<body>
+
+<div id='map'></div>
+
+   
+    <!--
+
+    <div id='sidebar'>
+        <h2>Change in Housing Units in the Greater Golden Horseshoe, 2011-2016 </h2>
+        <h3>2011 Dissemination Blocks</h3>
+        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
+        <p id='text'>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
+            
+            <div id='tooltip'></div>
+            <div id='tooltip2'></div>
+            <div id='tooltip3'></div>
+            <div id="tooltip-name"></div>
+            
+          
+        
+           
+          <div class='legend' id="housing">
+                <h4>Change in Dwellings</h4>
+                <div><span style='background-color: #4575B5'></span>20 or greater</div>
+                <div><span style='background-color: #849EB9'></span>6 to 20</div>
+                <div><span style='background-color: #C0CCBE'></span>1 to 5</div>
+                <div><span style='background-color: #FFFFBF'></span>0 to 1</div>
+                <div><span style='background-color: #FAB884'></span>-1 to -4</div>
+                <div><span style='background-color: #ED7552'></span>-5 or less</div>
+            </div>
+            <div class='legend' id="zoning">
+                <h4>Residential Zones</h4>
+                <div><span style='background-color: #ffff99'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_20.htm" target=blank>Detached Zone (RD)</a></div>
+                <div><span style='background-color: #f9f239'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_40.htm" target=blank>Semi-Detached Zone (RS)</a></div>
+                <div><span style='background-color: #C90'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_10.htm" target=blank>Residential Zone (R)</a></div>
+                <div><span style='background-color: #804000'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_60.htm" target=blank>Townhouse Zone ( RT)</a></div>
+                <div><span style='background-color: #4d3319'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_80.htm" target=blank>Multiple Dwelling Zone (RM)</a></div>
+            </div>
+
+    </div>
+    <nav id="menu"></nav>
+
+-->
+
+<!--JS-->
+   
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';   
+
+    var bounds = [
+    [-80.340961, 43.344633], // Southwest coordinates
+    [-78.537738, 43.958661]  // Northeast coordinates
+        ];
+    
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/tweatherburn/cjhlc4jax079x2sqz0ih4c27k', //stylesheet location
+    center: [-79.355,43.684], // starting position
+    zoom: 10.5, // starting zoom
+    //maxBounds: bounds, //maxbounds off
+    maxZoom:14,
+    minZoom: 10.5,
+    bearing:-16
+    
+        
+
+});
+    
+
+    
+map.on('load', function(){
+
+//dissemination blocks - housing
+map.addSource('neighbourhoods', {
+      'type':'vector',
+      'url':'mapbox://tweatherburn.cppzdhhi'
+    });
+
+map.addLayer({
+      'id':'neighbourhoods',
+      'type':'fill',
+      'source':'neighbourhoods',
+      'source-layer':'NBRHDS_FruitTreeSum-7qzyf9',
+      'layout': {
+            'visibility': 'visible'
+        },
+      'paint':{
+        'fill-color':{
+            "property": "TotalTrees",
+            'type':'interval',
+            "stops": [
+                [50,'#edf8fb'],
+                [100,'#bfd3e6'],
+                [175,'#9ebcda'],
+                [250,'#8c96c6'],
+                [350,'#8856a7'],
+                [550,'#810f7c']
+            ], 
+        },
+        'fill-opacity':.8,
+        'fill-outline-color':'#f7f7f7'
+        
+      },
+      'paint.tilted':{
+      }
+    });
+
+map.addLayer({
+      'id':'neighbourhoods-hover',
+      'type':'fill',
+      'source':'neighbourhoods',
+      'source-layer':'NBRHDS_FruitTreeSum-7qzyf9',
+      'layout': {},
+      'layout': {
+            'visibility': 'visible'
+        },
+      "paint": {
+            "fill-color": "#bfd3e6",
+            "fill-opacity": 0.5
+        },
+        "filter": ["==", "AREA_NAME", ""] 
+});
+
+// When the user moves their mouse over the states-fill layer, we'll update the filter in
+// the state-fills-hover layer to only show the matching state, thus making a hover effect.
+map.on("mousemove", "neighbourhoods", function(e) {
+map.setFilter("neighbourhoods-hover", ["==", "AREA_NAME", e.features[0].properties.AREA_NAME]);
+    });
+
+// Reset the state-fills-hover layer's filter when the mouse leaves the layer.
+map.on("mouseleave", "neighbourhoods", function() {
+map.setFilter("neighbourhoods-hover", ["==", "name", ""]);
+    
+})
+
+// Create a popup, but don't add it to the map yet.
+    var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+
+    map.on('mouseenter', 'neighbourhoods', function(e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
+
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.AREA_NAME;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+    });
+
+    map.on('mouseleave', 'neighbourhoods', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+    });
+})
+    
+    
+    
+    
+//toggle layers
+/*--------------------------------------------------------
+
+var toggleableLayerIds = ['zoning','housing' ];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    var legendname = link.textContent = id;
+    console.log(legendname);
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        var legendid = document.getElementById(clickedLayer);
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            legendid.style.display = "none";
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            legendid.style.display = "block";
+        }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
+≈
+  
+map.on('mousemove', function (e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: ['housing']
+            });
+
+            if (features.length) {
+                //show name and value in sidebar
+                document.getElementById('tooltip-name').innerHTML = "Dissemination Block ID: " + features[0].properties.DBUID;
+                document.getElementById('tooltip').innerHTML = 'Change in Dwelling Units: ' + features[0].properties.Dwel_11_16;
+                document.getElementById('tooltip2').innerHTML = 'Dwelling Count 2016: ' + features[0].properties.Dwel2016;
+                document.getElementById('tooltip3').innerHTML = 'Dwelling Count 2011: ' + features[0].properties.TotDwel;
+                
+                
+                //for troubleshooting - show complete features info
+                //document.getElementById('tooltip').innerHTML = JSON.stringify(features, null, 2);
+            } else {
+                //if not hovering over a feature set tooltip to empty
+                document.getElementById('tooltip-name').innerHTML = "";
+                document.getElementById('tooltip').innerHTML = "";
+                document.getElementById('tooltip2').innerHTML = "";
+                document.getElementById('tooltip3').innerHTML = "";
+                
+            };
+            
+        });
+
+
+//Add 3d buildings on zoom to 15    
+map.on('load', function() {
+    map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+            'fill-extrusion-color': '#969696',
+            'fill-extrusion-height': {
+                'type': 'identity',
+                'property': 'height'
+            },
+            'fill-extrusion-base': {
+                'type': 'identity',
+                'property': 'min_height'
+            },
+            'fill-extrusion-opacity': .8
+        }
+    });
+});
+-----------------------------------------------------------------------------*/
+</script>
+
+</body>
+</html>
