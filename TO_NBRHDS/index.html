@@ -187,7 +187,8 @@
     
     .mapboxgl-popup {
         max-width: 400px;
-        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        font: 12px/20px 'proxima-nova', Arial, Helvetica, sans-serif;
+        
         }
     
     
@@ -334,138 +335,26 @@ map.setFilter("neighbourhoods-hover", ["==", "name", ""]);
     
 })
 
-// Create a popup, but don't add it to the map yet.
-    var popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false
-    });
-
-    map.on('mouseenter', 'neighbourhoods', function(e) {
-        // Change the cursor style as a UI indicator.
-        map.getCanvas().style.cursor = 'pointer';
-
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.AREA_NAME;
-
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        // Populate the popup and set its coordinates
-        // based on the feature found.
-        popup.setLngLat(coordinates)
-            .setHTML(description)
+map.on('click', 'neighbourhoods', function (e) {
+        new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .setHTML(e.features[0].properties.AREA_NAME + "<br>"+ "Total Fruit Trees: " +e.features[0].properties.TotalTrees)
             .addTo(map);
     });
 
-    map.on('mouseleave', 'neighbourhoods', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
+    // Change the cursor to a pointer when the mouse is over the states layer.
+    map.on('mouseenter', 'neighbourhoods', function () {
+        map.getCanvas().style.cursor = 'pointer';
     });
-})
-    
-    
-    
-    
-//toggle layers
-/*--------------------------------------------------------
 
-var toggleableLayerIds = ['zoning','housing' ];
-
-for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
-
-    var link = document.createElement('a');
-    link.href = '#';
-    link.className = 'active';
-    link.textContent = id;
-
-    var legendname = link.textContent = id;
-    console.log(legendname);
-
-    link.onclick = function (e) {
-        var clickedLayer = this.textContent;
-        e.preventDefault();
-        e.stopPropagation();
-
-
-        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-        var legendid = document.getElementById(clickedLayer);
-
-        if (visibility === 'visible') {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-            legendid.style.display = "none";
-            this.className = '';
-        } else {
-            this.className = 'active';
-            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-            legendid.style.display = "block";
-        }
-    };
-
-    var layers = document.getElementById('menu');
-    layers.appendChild(link);
-}
-
-≈
-  
-map.on('mousemove', function (e) {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: ['housing']
-            });
-
-            if (features.length) {
-                //show name and value in sidebar
-                document.getElementById('tooltip-name').innerHTML = "Dissemination Block ID: " + features[0].properties.DBUID;
-                document.getElementById('tooltip').innerHTML = 'Change in Dwelling Units: ' + features[0].properties.Dwel_11_16;
-                document.getElementById('tooltip2').innerHTML = 'Dwelling Count 2016: ' + features[0].properties.Dwel2016;
-                document.getElementById('tooltip3').innerHTML = 'Dwelling Count 2011: ' + features[0].properties.TotDwel;
-                
-                
-                //for troubleshooting - show complete features info
-                //document.getElementById('tooltip').innerHTML = JSON.stringify(features, null, 2);
-            } else {
-                //if not hovering over a feature set tooltip to empty
-                document.getElementById('tooltip-name').innerHTML = "";
-                document.getElementById('tooltip').innerHTML = "";
-                document.getElementById('tooltip2').innerHTML = "";
-                document.getElementById('tooltip3').innerHTML = "";
-                
-            };
-            
-        });
-
-
-//Add 3d buildings on zoom to 15    
-map.on('load', function() {
-    map.addLayer({
-        'id': '3d-buildings',
-        'source': 'composite',
-        'source-layer': 'building',
-        'filter': ['==', 'extrude', 'true'],
-        'type': 'fill-extrusion',
-        'minzoom': 15,
-        'paint': {
-            'fill-extrusion-color': '#969696',
-            'fill-extrusion-height': {
-                'type': 'identity',
-                'property': 'height'
-            },
-            'fill-extrusion-base': {
-                'type': 'identity',
-                'property': 'min_height'
-            },
-            'fill-extrusion-opacity': .8
-        }
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'neighbourhoods', function () {
+        map.getCanvas().style.cursor = '';
     });
 });
------------------------------------------------------------------------------*/
+    
+
 </script>
 
 </body>
 </html>
-
