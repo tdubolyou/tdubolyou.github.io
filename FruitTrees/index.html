@@ -30,6 +30,7 @@
 <!--Style Sources-->    
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' />
+    
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Work+Sans" rel="stylesheet">
     <script src="https://use.typekit.net/pig7gwg.js"></script>
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
@@ -47,7 +48,7 @@ body {
     display: block;
     position: relative;
     width:100%;
-    height:100%;
+    /*height:650px;*/
     font-family: proxima-nova, sans-serif;
     font-style: normal;
     font-weight: 300;
@@ -60,7 +61,8 @@ body {
     top:0; 
     bottom:0; 
     width:100%;
-    height: 100%;
+    height:800px;
+    
     z-index: 1;
 }
 
@@ -388,7 +390,7 @@ a {
             <div><span style='background-color:#E28337'></span>AMERICAN HAZEL</div>
             <div><span style='background-color:#E28337'></span>HAZEL</div> -->
             <br>
-            <div class='speciesList'>Circle size depicts measurement of diameter at breast height (m)</div>
+            <div class='speciesList'>Circle size depicts measurement of diameter at breast height (1.3 m)</div>
         
         </div>
        
@@ -755,30 +757,7 @@ map.on('load', function(){
                 //change last number to edit circle size proportional to DBH
            
              'circle-color': [
-                //     'match',
-                //     ['get', 'COMMON_NAM'],
-                //     'AMERICAN CHESTNUT','#0080ff',
-                //     'AMERICAN HAZEL','#E28337',
-                //     'APPLE','#e31a1c',
-                //     'APRICOT','#fdbf6f',
-                //     'BLACK (RED) MULBERRY','#391d79',
-                //     'BLACK WALNUT','#996633',
-                //     'BRADFORD PEAR','#A4450E',
-                //     'CHERRY','#fb9a99',
-                //     'CHOKE CHERRY','#fb9a99',
-                //     'CRAB APPLE','#cc3300',
-                //     'HACK-BERRY','#AF85A9',
-                //     'HAZEL','#E28337',
-                //     'MULBERRY','#391d79',
-                //     'PEACH', '#ff9900',
-                //     'PEAR','#b2df8a',
-                //     'PLUM','#6a3d9a',
-                //     'PURPLELEAF CHERRY','#fb9a99',
-                //     'SARGENT CHERRY','#fb9a99',
-                //     'WALNUT','#996633',
-                //    /* other */ '#ccc'
-                // ]
-                // [
+                
                     'match',
                     ['get', 'COMMON_NAM'],
                     'APPLE', '#e41a1c',
@@ -809,7 +788,7 @@ map.on('load', function(){
 
 
 
-        // }, 'water');
+       
 
         
     map.on('mousemove', function (e) {
@@ -848,38 +827,12 @@ map.on('load', function(){
                     }, 2000);
                     
                 };
-                
-    });
+      });
 
     map.on('mouseleave', function (e) {
-
-        
-
     })
     
-    // map.addLayer({
-    //     'id': '3d-buildings',
-    //     'source': 'composite',
-    //     'source-layer': 'building',
-    //     'filter': ['==', 'extrude', 'true'],
-    //     'type': 'fill-extrusion',
-    //     'minzoom': 15,
-    //     'paint': {
-    //         'fill-extrusion-color': '#969696',
-    //         'fill-extrusion-height': {
-    //             'type': 'identity',
-    //             'property': 'height'
-    //         },
-    //         'fill-extrusion-base': {
-    //             'type': 'identity',
-    //             'property': 'min_height'
-    //         },
-    //         'fill-extrusion-opacity': .8
-    //     }
-    // });
-
-
-    document.getElementById('topWrap').style.display = 'block';
+   document.getElementById('topWrap').style.display = 'block';
 
 
 });
