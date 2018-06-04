@@ -15,7 +15,7 @@
     <meta property="og:image" content=""/>
     <meta property="og:title" content="Fruit Trees by Neighbourhood"/>
     <meta property="og:type" content="article"/>
-    <meta property="og:url" content= />
+    <meta property="og:url" content= "img"/>
    
 
 <!-------------------------------------Twitter Cards------------------------------------------------------------>
@@ -288,16 +288,15 @@ map.addLayer({
         },
       'paint':{
         'fill-color':{
-            "property": "TotalTrees",
+            "property": "TreeDens",
             'type':'interval',
             "stops": [
-                [50,'#edf8fb'],
-                [100,'#bfd3e6'],
-                [175,'#9ebcda'],
-                [250,'#8c96c6'],
-                [350,'#8856a7'],
-                [550,'#810f7c']
-            ], 
+                [0.01,'#edf8fb'],
+                [0.02315,'#b3cde3'],
+                [0.03851,'#8c96c6'],
+                [0.05802,'#8856a7'],
+                [0.10727,'#5c0a58'],
+             ], 
         },
         'fill-opacity':.8,
         'fill-outline-color':'#f7f7f7'
@@ -338,7 +337,7 @@ map.setFilter("neighbourhoods-hover", ["==", "name", ""]);
 map.on('click', 'neighbourhoods', function (e) {
         new mapboxgl.Popup()
             .setLngLat(e.lngLat)
-            .setHTML(e.features[0].properties.AREA_NAME + "<br>"+ "Total Fruit Trees: " +e.features[0].properties.TotalTrees)
+            .setHTML(e.features[0].properties.AREA_NAME + "<br>"+ "Total Fruit Trees: " + e.features[0].properties.TotalTrees) 
             .addTo(map);
     });
 
