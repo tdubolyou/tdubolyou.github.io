@@ -52,12 +52,12 @@
     
          #sidebar {
             position: absolute;
-            top: 0;
-            left: 1%;
+            bottom: 1%;
+            right: 1%;
             
             width: 20%;
             overflow: auto;
-            background: rgba(37, 37, 37, .95);
+            background: #fff;
             font-family: proxima-nova, sans-serif;
             font-style: normal;
             font-weight: 300;
@@ -79,8 +79,8 @@
             font-weight: 200;
         }
         .legend {
-            color: #f6f6f6;
-            background-color: #333333;
+            color: #333;
+            background-color: #fff;
             border-radius: 3px;
             left: 10%;
             box-shadow: 0 1px 2px rgba(0,0,0,0.10);
@@ -203,45 +203,21 @@
 
 <div id='map'></div>
 
-   
-    <!--
-
-    <div id='sidebar'>
-        <h2>Change in Housing Units in the Greater Golden Horseshoe, 2011-2016 </h2>
-        <h3>2011 Dissemination Blocks</h3>
-        <p><a href=http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/hlt-fst/pd-pl/index-eng.cfm target="_blank">Source: Statistics Canada, 2016</a></p>
-        <p id='text'>&copy; <a href=http://mapto.ca target="_blank">mapTO</a> 2016</p> 
-            
-            <div id='tooltip'></div>
-            <div id='tooltip2'></div>
-            <div id='tooltip3'></div>
-            <div id="tooltip-name"></div>
-            
-          
-        
-           
+    <div id='sidebar'>  
           <div class='legend' id="housing">
-                <h4>Change in Dwellings</h4>
-                <div><span style='background-color: #4575B5'></span>20 or greater</div>
-                <div><span style='background-color: #849EB9'></span>6 to 20</div>
-                <div><span style='background-color: #C0CCBE'></span>1 to 5</div>
-                <div><span style='background-color: #FFFFBF'></span>0 to 1</div>
-                <div><span style='background-color: #FAB884'></span>-1 to -4</div>
-                <div><span style='background-color: #ED7552'></span>-5 or less</div>
+                <h4>Fruit Trees per Hectare</h4>
+                <div><span style='background-color: #5c0a58'></span>0.1 or greater</div>
+                <div><span style='background-color: #8856a7'></span>0.05 to 0.1</div>
+                <div><span style='background-color: #8c96c6'></span>0.39 to 0.05</div>
+                <div><span style='background-color: #b3cde3'></span>0.023 to 0.39</div>
+                <div><span style='background-color: #edf8fb'></span>0.01 to 0.023</div>
+                
             </div>
-            <div class='legend' id="zoning">
-                <h4>Residential Zones</h4>
-                <div><span style='background-color: #ffff99'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_20.htm" target=blank>Detached Zone (RD)</a></div>
-                <div><span style='background-color: #f9f239'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_40.htm" target=blank>Semi-Detached Zone (RS)</a></div>
-                <div><span style='background-color: #C90'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_10.htm" target=blank>Residential Zone (R)</a></div>
-                <div><span style='background-color: #804000'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_60.htm" target=blank>Townhouse Zone ( RT)</a></div>
-                <div><span style='background-color: #4d3319'></span><a href="http://www.toronto.ca/zoning/bylaw_amendments/ZBL_NewProvision_Chapter10_80.htm" target=blank>Multiple Dwelling Zone (RM)</a></div>
-            </div>
-
+               
     </div>
     <nav id="menu"></nav>
 
--->
+
 
 <!--JS-->
    
@@ -260,9 +236,9 @@ var map = new mapboxgl.Map({
     center: [-79.355,43.684], // starting position
     zoom: 10.5, // starting zoom
     //maxBounds: bounds, //maxbounds off
-    maxZoom:10.5,
+    maxZoom:14,
     minZoom: 10.5,
-    bearing:-17
+    bearing:-16
     
         
 
