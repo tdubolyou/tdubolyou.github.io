@@ -98,7 +98,9 @@ body {
     display: block;
     display: none;
     position: absolute;
-    width: 320px;
+    width: 28%;
+    max-width: 190px;
+    padding-right: 5%;
     background-color: #000;
     z-index: 100;
     top: 10px;
@@ -128,9 +130,11 @@ body {
     background-color: #FFF;
     color: #333;
     /* opacity: 0.2; */
-    width: 100px;
-    margin-left: 28px;
-    margin-bottom: 20px;
+    width: 25%;
+    max-width: 200px;
+    min-width: 50px;
+    margin-left: 10%;
+    margin-bottom: 10%;
     /* height: 20px; */
     text-align: center;
     opacity:0.2;
@@ -147,8 +151,9 @@ body {
 /*            bottom:10px;
     left:0;
     right:0;*/
-    padding:20px;
-    width:260px;
+    padding:10%;
+    width:80%;
+    max-width:250px;
     margin:auto;
     z-index:100;
     color:#fff;
@@ -164,8 +169,8 @@ body {
     color: #f6f6f6;
     font-size: 12px;
     width:100%;
-    padding:20px;
-    padding-top:5px;
+    padding:10%;
+    padding-top:10%;
     /*background-color: #333333;*/
     /*border-radius: 3px;*/
     /*box-shadow: 0 1px 2px rgba(0,0,0,0.10);*/
@@ -179,7 +184,7 @@ body {
 
 #sidebar h1 {
     font-weight: 100;
-    font-size: 25px;
+    font-size: 1em;
     margin-bottom: -10px;
     margin-top:0;
 }
@@ -199,7 +204,7 @@ body {
     display: inline-block;
     width:100%;
     opacity:0.1;
-    font-size: 14px;
+    font-size: 1.2em;
     letter-spacing: 1px;
     opacity: 0.2;
 }
@@ -208,7 +213,7 @@ body {
     display: inline-block;
     width: 100%;
     opacity: 0.1;
-    font-size: 14px;
+    font-size: .8em;
     letter-spacing: 1px;
     }
 
@@ -232,8 +237,8 @@ body {
 
 #legend .speciesList {
     margin-bottom: 5px;
-    width:290px;
-    font-size: 12px;
+    width:85%;
+    font-size: .9em;
     opacity: 1;
     color:#555;
     pointer-events: none;
@@ -288,6 +293,7 @@ a {
     #topWrap {
         top:0;
         left:0;
+        background-color: rgba(0,0,0,0.8)
     }
 
     #tooltipWrap {
