@@ -43,7 +43,6 @@ body {
     padding:0;
     background-color: #000; 
 }
-
 #mapWrap {
     display: block;
     position: relative;
@@ -55,7 +54,6 @@ body {
     margin:0;
     padding:0;
 }
-
 #map { 
     position:absolute; 
     top:0; 
@@ -65,7 +63,6 @@ body {
     
     z-index: 1;
 }
-
 #mobileBtn {
     position: absolute;
     top:10px;
@@ -79,7 +76,6 @@ body {
     z-index:101;
     color:#333;
 }
-
 #mobileBtn span {
     display: block;
     margin: auto;
@@ -89,24 +85,19 @@ body {
     vertical-align: middle;
     font-weight: bold;
 }
-
 #mobileBtn:hover {
     cursor: pointer;
 }
-
 #topWrap {
     display: block;
     display: none;
     position: absolute;
-    width: 28%;
-    max-width: 190px;
-    padding-right: 5%;
+    width: 320px;
     background-color: #000;
     z-index: 100;
     top: 10px;
     left: 10px;
 }
-
  #sidebar {
     display: block;
     width: 100%;
@@ -115,12 +106,10 @@ body {
     padding-bottom: 0;
     font-size: 12px;
 }
-
 #sidebar p {
     margin:0 2px;
     color: #808080;
 }
-
 #slideBtn {
     display: block;
     /* float: left; */
@@ -130,47 +119,40 @@ body {
     background-color: #FFF;
     color: #333;
     /* opacity: 0.2; */
-    width: 25%;
-    max-width: 200px;
-    min-width: 50px;
-    margin-left: 10%;
-    margin-bottom: 10%;
+    width: 100px;
+    margin-left: 28px;
+    margin-bottom: 20px;
     /* height: 20px; */
     text-align: center;
     opacity:0.2;
     pointer-events: none;
 }
-
 #slideBtn:hover {
     cursor:pointer;
 }
-
 #slideWrap {
     display: block;
 /*            position: absolute;*/
 /*            bottom:10px;
     left:0;
     right:0;*/
-    padding:10%;
-    width:80%;
-    max-width:250px;
+    padding:20px;
+    width:260px;
     margin:auto;
     z-index:100;
     color:#fff;
 }
-
 #slideWrap input {
     width:100%;
 }
-
 #legend {
     display: block;
     width:100%;
     color: #f6f6f6;
     font-size: 12px;
     width:100%;
-    padding:10%;
-    padding-top:10%;
+    padding:20px;
+    padding-top:5px;
     /*background-color: #333333;*/
     /*border-radius: 3px;*/
     /*box-shadow: 0 1px 2px rgba(0,0,0,0.10);*/
@@ -181,30 +163,26 @@ body {
     /*margin-top:10%;*/
    
     }
-
 #sidebar h1 {
     font-weight: 100;
-    font-size: 1em;
+    font-size: 25px;
     margin-bottom: -10px;
     margin-top:0;
 }
-
 #sidebar h2 {
     font-size: 16px;
     font-weight: 400;
     color:#999;
 }
-
 #legend h4 {
     margin: 10px 0;
     color:#d3d3d3;
     }
-
 #legend div {
     display: inline-block;
     width:100%;
     opacity:0.1;
-    font-size: 1.2em;
+    font-size: 14px;
     letter-spacing: 1px;
     opacity: 0.2;
 }
@@ -213,10 +191,9 @@ body {
     display: inline-block;
     width: 100%;
     opacity: 0.1;
-    font-size: .8em;
+    font-size: 14px;
     letter-spacing: 1px;
     }
-
 #legend div span {
     border-radius: 50%;
     display: inline-block;
@@ -225,30 +202,24 @@ body {
     height: 10px;
     opacity: 1;
     }
-
 #legend div:hover, #legend div.active:hover {
     cursor: pointer;
     opacity: 1;
 }
-
 #legend div.active {
     opacity: 0.85;
 }
-
 #legend .speciesList {
     margin-bottom: 5px;
-    width:85%;
-    font-size: .9em;
+    width:290px;
+    font-size: 12px;
     opacity: 1;
     color:#555;
     pointer-events: none;
 }
-
-
 #legend .speciesList:hover {
     cursor: inherit;
 }
-
 #tooltipWrap {
     display: block;
     position: absolute;
@@ -266,57 +237,44 @@ body {
       -ms-transition: opacity 0.5s ease-in-out;
       -o-transition: opacity 0.5s ease-in-out;
 }
-
 #tooltip {
     font-size:16px;
 }
-
 #tooltip2, #tooltip3 {
     color:#969696;
     /*font-size:*/
 }
-
 #tooltip-name {
     color: #969696;
     /*font-size:calc(2px + 1.2vw);*/
 }
-
 a {
    font-family: proxima-nova, sans-serif; 
     color: #999;
     text-decoration: none;
 }
     
-
 @media (max-width:700px) {
-
     #topWrap {
         top:0;
         left:0;
         background-color: rgba(0,0,0,0.8)
     }
-
     #tooltipWrap {
         top:0;
         right:0;
     }
-
     #mobileBtn {
         display: block;
     }
-
     #sidebar h1 {
         font-size: 20px;
     }
-
     #sidebar h2 {
         font-size: 14px;
     }
     
 }
-
-
-
 </style>
 </head>
 
@@ -453,7 +411,6 @@ var months = [
     'Nov',
     'Dec'
 ];
-
 var filteredTrees = [
     "APPLE",
     "CHERRY",
@@ -474,7 +431,6 @@ var filteredTrees = [
     "AMERICAN HAZEL",
     "HAZEL"
 ];
-
 document.getElementById('appleID').addEventListener('click', function(){
     clickFilter(this);
 });
@@ -499,9 +455,7 @@ document.getElementById('pearID').addEventListener('click', function(){
 document.getElementById('plumID').addEventListener('click', function(){ 
     clickFilter(this);
 });
-
 document.getElementById('mobileBtn').addEventListener('click', function(){
-
     if (this.classList.contains('active')) {
         this.classList.remove('active');
         document.getElementById('topWrap').style.display = 'none';
@@ -510,7 +464,6 @@ document.getElementById('mobileBtn').addEventListener('click', function(){
         document.getElementById('topWrap').style.display = 'block';
     }
 }); 
-
 document.getElementById('slideBtn').addEventListener('click', function(){ 
     this.style.opacity = 0.2;
     this.style.pointerEvents = 'none';
@@ -519,38 +472,29 @@ document.getElementById('slideBtn').addEventListener('click', function(){
     document.getElementById('month').textContent = "Slide to show by month";
     // document.getElementById('slider').value = "";
     document.getElementById('slideWrap').classList.remove('active');
-
     let filterArray = ["in", "COMMON_NAM"];
-
     for (i=0;i<filteredTrees.length;i++) {
         filterArray.push(filteredTrees[i]);
     }
-
     map.setFilter('fruit_trees', filterArray);
 });
-
 document.getElementById('slider').addEventListener('input', function(e) {
     document.getElementById('slideBtn').style.opacity = 1;
     document.getElementById('slideBtn').style.pointerEvents = 'inherit';
     let month = parseInt(e.target.value, 10);
     document.getElementById('month').textContent = months[month];
 });
-
 document.getElementById('slider').addEventListener('change', function(e) {
     document.getElementById('slideWrap').classList.add('active');
     let month = parseInt(e.target.value, 10);
     filterBy(month);
 });
-
 function clickFilter(e) {
     // console.log('click');
     // console.log('e', e);
     // console.log('this', this);
-
     // filterBy(month);
-
     let treeID = e.id;
-
     if (e.classList.contains('active')) {
         e.classList.remove('active');
         let removeStr = [];
@@ -579,39 +523,27 @@ function clickFilter(e) {
             // map.setFilter('fruit_trees', ["in", "COMMON_NAM", "MULBERRY", "BLACK (RED) MULBERRY"]);
             removeStr.push("MULBERRY", "BLACK (RED) MULBERRY", "HACK-BERRY");
         } 
-
         filteredTrees = filteredTrees.filter(function(val){
           return (removeStr.indexOf(val) == -1 ? true : false)
         });
-
-
         let filterArray = ["in", "COMMON_NAM"];
-
         for (i=0;i<filteredTrees.length;i++) {
             filterArray.push(filteredTrees[i]);
         }
-
         if (document.getElementById('slideWrap').classList.contains('active')) {
             let monthVal = document.getElementById('slider').value;
             let month = parseInt(monthVal, 10);
-
             var filters = ['==', months[month], "1"];
-
             let comboFilters = ["all",filters, filterArray];
             map.setFilter('fruit_trees', comboFilters);
         } else {
             map.setFilter('fruit_trees', filterArray);
         }
-
         // let comboFilters = ["all",filters, filterArray];
-
         // // map.setFilter('fruit_trees', filterArray);
         // map.setFilter('fruit_trees', comboFilters);
-
-
     } else {
         e.classList.add('active');
-
         if (treeID == 'appleID') {
             // map.setFilter('fruit_trees', ["in", "COMMON_NAM", "APPLE", "CRAB APPLE"]);
             filteredTrees.push("APPLE");
@@ -637,19 +569,14 @@ function clickFilter(e) {
             // map.setFilter('fruit_trees', ["in", "COMMON_NAM", "MULBERRY", "BLACK (RED) MULBERRY"]);
             filteredTrees.push("MULBERRY", "BLACK (RED) MULBERRY", "HACK-BERRY");
         } 
-
         let filterArray = ["in", "COMMON_NAM"];
-
         for (i=0;i<filteredTrees.length;i++) {
             filterArray.push(filteredTrees[i]);
         }
-
         if (document.getElementById('slideWrap').classList.contains('active')) {
             let monthVal = document.getElementById('slider').value;
             let month = parseInt(monthVal, 10);
-
             var filters = ['==', months[month], "1"];
-
             let comboFilters = ["all",filters, filterArray];
             map.setFilter('fruit_trees', comboFilters);
         } else {
@@ -657,31 +584,22 @@ function clickFilter(e) {
         }
     }
 };
-
-
 function filterBy(month) {
-
     // console.log('month', month);
     // console.log('month name', months[month]);
-
     // console.log('filteredTrees', filteredTrees);
-
     let filterArray = ["in", "COMMON_NAM"];
-
     for (i=0;i<filteredTrees.length;i++) {
         filterArray.push(filteredTrees[i]);
     }
-
     var filters = ['==', months[month], "1"];
     var comboFilters = ["all",filters, filterArray]
     // console.log('comboFilters');
     map.setFilter('fruit_trees', comboFilters);
     // map.setFilter('fruit_trees', filters);
-
     // Set the label to the month
     
 }
-
 var bounds = [
     [-79.738129, 43.416454], // Southwest coordinates
     [-79.019843, 44.024738]  // Northeast coordinates
@@ -700,17 +618,14 @@ var map = new mapboxgl.Map({
     bearing: -16.5, // bearing in degrees
     maxZoom:14,
     maxBounds: bounds
-
 });
     
 map.on('load', function(){
-
         //set up data sources
     map.addSource('fruit_trees', {
           'type':'vector',
           'url':'mapbox://tweatherburn.b5hxowle'
         });
-
     map.addLayer({
               'id':'fruit_trees_base',
               'type':'circle',
@@ -735,7 +650,6 @@ map.on('load', function(){
               'paint.tilted':{
               }
         });
-
     map.addLayer({
           'id':'fruit_trees',
           'type':'circle',
@@ -747,7 +661,6 @@ map.on('load', function(){
            'paint': {
                'circle-radius':
                    // ['/',['get', 'DBH_TRUNK'],10],
-
                    {
                     property: 'DBH_TRUNK',
                     type: 'exponential',
@@ -787,30 +700,21 @@ map.on('load', function(){
                     'BLACK WALNUT', '#663300',
                     /* other */ '#ccc'
                 ]
-
              }, 
           'paint.tilted':{
           }
         });
-
-
-
        
-
         
     map.on('mousemove', function (e) {
                 var features = map.queryRenderedFeatures(e.point, {
                     layers: ['fruit_trees']
                 });
-
                 var timeout;
-
                 if (features.length) {
-
                     clearInterval(timeout);
                     document.getElementById('tooltipWrap').style.opacity = 1;
                     // document.getElementById('tooltipWrap').style.display = 'block';
-
                     // console.log('e', features[0].properties.GEO_ID);
                     // map.getCanvas().style.cursor = 'pointer';
                     //show name and value in sidebar
@@ -828,22 +732,17 @@ map.on('load', function(){
                     // document.getElementById('tooltip').innerHTML = "";
                     // document.getElementById('tooltip2').innerHTML = "";
                     // document.getElementById('tooltip3').innerHTML = "";
-
                     timeout = setTimeout(function() {
                         document.getElementById('tooltipWrap').style.opacity = 0;    
                     }, 2000);
                     
                 };
       });
-
     map.on('mouseleave', function (e) {
     })
     
    document.getElementById('topWrap').style.display = 'block';
-
-
 });
-
 </script>
 </body>
 </html>
