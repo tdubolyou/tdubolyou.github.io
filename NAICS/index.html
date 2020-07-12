@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Display a map</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  
+<style>
+    body { 
+        margin: 0; 
+        padding: 0;
+        overflow: hidden;
+        }
+
+    #map { 
+        position: absolute; 
+        top: 0; bottom: 0; 
+        width: 100%; 
+        }
+
+
+    /* The sidepanel menu */
+    .sidepanel {
+        height: 100%; /* Specify a height */
+        width: 300px; /* 0 width - change this with JavaScript */
+        position: absolute; /* Stay in place */
+        z-index: 1; /* Stay on top */
+        top: 0;
+        left: -300px;
+        background-color: #f2f2f2;
+        overflow-x: hidden; /* Disable horizontal scroll */
+        padding-top: ; /* Place content 60px from the top */
+        transition: 1s; /* 0.5 second transition effect to slide in the sidepanel */
+        text-align: 
+        }
+
+    /* The sidepanel links */
+    .sidepanel a {
+        padding: 4px 4px 4px 4px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+        }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidepanel a:hover {
+        color: #bfbfbf;
+        }
+
+    /* Position and style the close button (top right corner) */
+    .sidepanel .closebtn {
+        position: absolute;
+        top: -10px;
+        right: 5px;
+        font-size: 30px;
+        margin-left: 50px;
+        
+        }
+
+    /* Style the button that is used to open the sidepanel */
+    .openbtn {
+        font-size: 40px;
+        cursor: pointer;
+        background-color: #666;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        position: fixed;
+        width:50px;
+        height: 100%
+        }
+
+    .openbtn:hover {
+        background-color: #444;
+        }
+   
+    #menu {
+        background: #fff;
+        position: relative;
+        z-index: 1;
+        margin: auto;
+        border-radius: 2px;
+        width: 70%;
+        height: auto;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Lato', sans-serif;
+        }
+
+    #menu a {
+        font-size: 12px;
+        color: #404040;
+        display: block;
+        margin: 0 auto;
+        padding: 0;
+        padding: 5px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+        }
+    #menu a:last-child {
+        border: none;
+        }
+ 
+    #menu a:hover {
+        background-color: #898989;
+        color: #fff;
+        }
+
+    #menu a.active {
+        background-color: #898989;
+        color: #ffffff;
+        }
+
+    #menu a.active:hover {
+        background: #898989;
+        }
+    
+    #side-content {
+        font-family:'Open Sans';
+        width:100%
+    }
+    #side-content h3{
+        font-family:'Lato', sans-serif;
+        font-weight: 400;
+        font-size:1.3em;
+        text-align: center;
+    }
+    #side-content p{
+        font-family: 'Lato', sans-serif;
+        font-size: 1em;
+        text-align:center;
+        width: 75%;
+        margin: 20px auto;
+        display:relative;    
+    }
+    #mTO-top-bar{
+        
+        background-color: lightgray;
+        top:0;
+        position:absolute;
+        display:block;
+        width:100%;
+        z-index:1
+    }
+    #mTO-top-bar p{
+        text-align: center;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size:1.5em;
+        margin:5px;
+        padding-right:10px;
+    }
+    
+    #map canvas {
+        cursor: crosshair;
+    }
+    .legend{
+        width:80%;
+        display:block;
+        margin:auto;
+        margin-top:30px;
+        background-color:#fff;
+        border: solid 1px lightgray
+    }
+    
+    
+    </style>    
+</head>
+
+
+    
+<body>
+<div id='mTO-top-bar'>
+    <p>mapTO</p>
+
+</div>
+<div id="map"></div>  
+<button class="openbtn" onclick="openNav()">></button>
+<div id="mySidepanel" class="sidepanel">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div id="side-content"> 
+        <h3>The Geography of<br>Employment<br></h3>
+        <p>Employment category (NAICS) by place of residence, 2016</p>
+    </div>
+    <nav id="menu"></nav>
+    <img src="legend-01.png" class='legend'>
+    
+</div>
+<script>
+ 
+    
+/*-------------------MAPBOX MAP AND LAYERS----------------------*/   
+//Access Token
+    mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+    
+//Add map
+    if (!mapboxgl.supported()) {
+        alert('Your browser does not support Mapbox GL');
+    } else {
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/tweatherburn/ckbra0zbe2mab1hpldisldopa', // stylesheet location
+            center: [-79.386787,43.670203], // starting position [lng, lat]
+            bearing: -16,
+            pitch: 40,
+            zoom: 11, // starting zoom
+            minZoom:10,
+            maxZoom:15,
+            });
+        }
+    
+    map.on('load', function() {
+        map.addSource('NAICS-DAs', {
+            'type': 'vector',
+            'url': 'mapbox://tweatherburn.4ejlmqe0'
+            
+        });
+        
+        const opacity = 0.7
+        const colour_1 = '#edf8b1'
+        const colour_2 = '#b30000'
+        const colour_3 = '#660000'   
+        
+        //HEALTHCARE AND SOCIAL ASSISTANCE        
+        map.addLayer({
+            'id': 'Health Care and Social Assistance',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'visible'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Health'],
+                     0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Health'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //PROFESSIONAL SERVICES        
+        map.addLayer({
+            'id': 'Professional, Scientific and Technical Services',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_SciTech'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, '#7f2704'
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_SciTech'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+
+    //FINANCE
+        map.addLayer({
+            'id': 'Finance and Insurance',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_FinIns'],
+                     0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_FinIns'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+
+    //RETAIL       
+        map.addLayer({
+            'id': 'Retail',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_retailTrade'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_retailTrade'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //EDUCATION
+        map.addLayer({
+            'id': 'Educational Services',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Edu'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Edu'],
+                      0, 0,
+                     60, 5000,
+                     ],
+               'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //ACCOMODATION AND FOOD SERVICES       
+        map.addLayer({
+            'id': 'Accomodation and Food Services',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AccomFood'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AccomFood'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //MANUFACTURING
+        map.addLayer({
+            'id': 'Manufacturing',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Manu'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Manu'],
+                      0, 0,
+                     60, 5000,
+                     ],
+               'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+
+     //PUBLIC ADMIN        
+        map.addLayer({
+            'id': 'Public Administration',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_PubAdmin'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_PubAdmin'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //OTHER        
+        map.addLayer({
+            'id': 'Other services',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_OtherServ'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_OtherServ'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //ADMIN/WASTE MANAGEMENT        
+        map.addLayer({
+            'id': 'Administrative Support/ Waste Management',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_WM_Admin'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_WM_Admin'],
+                      0, 0,
+                     60, 5000,
+                     ],
+              'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //INFORMATION CULTURAL IND
+        map.addLayer({
+            'id': 'Information and Cultural Industries',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_InfoCultInd'],
+                      0, colour_1,
+                     40, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_InfoCultInd'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //MANAGEMENT        
+        map.addLayer({
+            'id': 'Management of Companies and Enterprises',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Mgmt'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Mgmt'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+        
+    //TRANSPORTATION, WAREHOUSING        
+        map.addLayer({
+            'id': 'Transportation and Warehousing',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_TransWareH'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_TransWareH'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //REAL ESTATE        
+        map.addLayer({
+            'id': 'Real estate, Rental and Leasing',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_RealEstate'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_RealEstate'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                  'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //WHOLESALE       
+        map.addLayer({
+            'id': 'Wholesale Trade',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Wstrade'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Wstrade'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                  'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //CONSTRUCTION        
+        map.addLayer({
+            'id': 'Construction',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Construct'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Construct'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    //ARTS AND ENTERTAINMENT        
+        map.addLayer({
+            'id': 'Arts, Entertainment and Recreation',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AndE'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AndE'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            }, 'settlement-subdivision-label');
+
+    /*//UTILITIES       
+        map.addLayer({
+            'id': 'Utilities',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Util'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_Util'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            });
+
+    //AG        
+        map.addLayer({
+            'id': 'Agriculture, forestry, fishing and hunting',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AgForFish'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_AgForFish'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            });
+
+    //MINING        
+        map.addLayer({
+            'id': 'Mining, quarrying, and oil and gas extraction',
+            'type': 'fill-extrusion',
+            'source': 'NAICS-DAs',
+            'source-layer':'TorDA2016_NAICS',
+            'filter':['<',0,['get','TotPopNAICS']],
+            'layout': {
+                'visibility': 'none'},
+            'paint': {
+                'fill-extrusion-color': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_MinOilGas'],
+                      0, colour_1,
+                     30, colour_2,
+                     60, colour_3
+                     ],
+                 'fill-extrusion-height': [
+                     'interpolate',
+                     ['linear'],
+                     ['get', 'p_MinOilGas'],
+                      0, 0,
+                     60, 5000,
+                     ],
+                'fill-extrusion-opacity':opacity,
+                }
+            });*/
+    
+
+        updateHover(activeLayer);
+    
+    });
+
+    
+/*----------------------- MAP CONTROLS --------------------------*/
+// Add zoom and rotation controls to the map.
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'bottom-right');
+
+
+/*// Add geolocate control to the map.
+    map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+            enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        })
+    );*/
+
+/*-----------------------SIDEBAR FUNCTION--------------------------*/
+    //Set the width of the sidebar to 250px (show it) */
+    function openNav() {
+      // document.getElementById("mySidepanel").style.width = "300px";
+      document.getElementById("mySidepanel").style.left = "0";
+    }
+
+    //Set the width of the sidebar to 0 (hide it) */
+    function closeNav() {
+      // document.getElementById("mySidepanel").style.width = "0";
+      document.getElementById("mySidepanel").style.left = "-300px";
+    }
+    
+    
+/*-----------------------LAYER TOGGLE MENU-------------------------*/
+
+    // enumerate ids of the layers
+    var toggleableLayerIds = [ 'Health Care and Social Assistance', 'Professional, Scientific and Technical Services', 'Finance and Insurance', 'Retail', 'Educational Services', 'Accomodation and Food Services', 'Manufacturing', 'Public Administration', 'Other services', 'Administrative Support/ Waste Management', 'Information and Cultural Industries', 'Management of Companies and Enterprises', 'Transportation and Warehousing', 'Real estate, Rental and Leasing', 'Wholesale Trade', 'Construction', 'Arts, Entertainment and Recreation'];
+ 
+    // set up the corresponding toggle button for each layer
+    for (var i = 0; i < toggleableLayerIds.length; i++) {
+        var id = toggleableLayerIds[i];
+
+        var link = document.createElement('a');
+        link.href = '#';
+        link.textContent = id;
+        if (id === 'Health Care and Social Assistance'){
+            link.className = 'active';}
+
+        link.onclick = function(e) {
+            var clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+            for (var j = 0; j < toggleableLayerIds.length; j++) {
+                if (clickedLayer === toggleableLayerIds[j]) {
+                	layers.children[j].className = 'active';
+                    
+                    map.off('mousemove', activeLayer, populatePopup);
+                    map.off('mouseout', activeLayer, closePopulatedPopup);
+
+                    updateHover(clickedLayer);
+                	map.setLayoutProperty(toggleableLayerIds[j], 'visibility', 'visible');
+                }
+                else {
+                	layers.children[j].className = '';
+                	map.setLayoutProperty(toggleableLayerIds[j], 'visibility', 'none');
+                    }
+                }   
+            };
+
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }    
+
+  
+   
+ /*------------POPUP----------------------------*/
+    
+    var activeLayer = 'Health Care and Social Assistance';
+    
+    var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+    
+    
+    function updateHover(layer) {
+        activeLayer = layer;
+        map.on('mousemove', layer, populatePopup);
+        map.on('mouseleave', layer, closePopulatedPopup);
+    }
+
+
+    function populatePopup(e) {
+
+            var features = e.features;
+
+            if (e.features.length > 0) {
+                var featureProperties = e.features[0].properties;
+                console.log('featureProperties', featureProperties);
+                var activeLayerField = getActiveLayerField(activeLayer);
+                console.log('activeLayerField', activeLayerField);
+                var dataField = featureProperties[activeLayerField];
+                console.log('dataField', dataField);
+
+            }
+
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup
+                .setLngLat(e.lngLat)
+                .setHTML(
+                        '<p style="color:#9a9a9a;margin-top:0px">Percentage working in</p>' +
+                        '<p style="margin-top:-12px">' + activeLayer + '</p>' +
+                        '<span style="font-weight:bold;font-size:30px">' + dataField + '%' + '</span>'
+                        )
+                .addTo(map);
+    };
+
+    function closePopulatedPopup() {
+        popup.remove();
+    }
+
+
+    function getActiveLayerField(d) {
+        return d === 'Health Care and Social Assistance' ? 'p_Health' :
+               d === 'Professional, Scientific and Technical Services'  ? 'p_SciTech' :
+               d === 'Finance and Insurance'  ? 'p_FinIns' :
+               d === 'Retail'  ? 'p_retailTrade' :
+               d === 'Educational Services'   ? 'p_Edu' :
+               d === 'Accomodation and Food Services'   ? 'p_AccomFood' :
+               d === 'Manufacturing'   ? 'p_Manu' :
+               d === 'Public Administration'   ? 'p_PubAdmin' :
+               d === 'Other services'   ? 'p_OtherServ' :
+               d === 'Administrative Support/ Waste Management'   ? 'p_WM_Admin' :
+               d === 'Information and Cultural Industries'   ? 'p_InfoCultInd' :
+               d === 'Management of Companies and Enterprises'   ? 'p_Mgmt' :
+               d === 'Transportation and Warehousing'   ? 'p_TransWareH' :
+               d === 'Real estate, Rental and Leasing'   ? 'p_RealEstate' :
+               d === 'Wholesale Trade'   ? 'p_Wstrade' :
+               d === 'Construction'   ? 'p_Construct' :
+               d === 'Arts, Entertainment and Recreation'   ? 'p_AndE' :
+                     'p_Health';
+    }
+         
+
+    
+</script>
+
+</body>
+</html>
