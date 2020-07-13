@@ -236,7 +236,7 @@
     
 <body>
 <div id='mTO-top-bar'>
-    <p><a href='www.mapto.ca'>mapTO</a></p>
+    <p><a href='https://www.mapto.ca' target="_blank">mapTO</a></p>
 
 </div>
 <div id="map"></div>  
@@ -251,9 +251,9 @@
     </div>
     <nav id="menu"></nav>
     <div id='legend-div'>
-        <p id='legend-label'>Percent of the population working in selected industry</p>
+        <p id='legend-label'>Percent of the population working in selected industry<br>(hover on map for exact value)</p>
         <img src="https://user-images.githubusercontent.com/8647754/87267930-0b7bf400-c497-11ea-89e8-fdba1e301165.png" class='legend'>
-        <p>Brought to you by<br><a href='www.mapto.ca'>mapTO.ca</a></p>
+        <p>Brought to you by<br><a href='https://www.mapto.ca' target="_blank">mapTO.ca</a></p>
     </div>
 </div>
 <script>
@@ -262,10 +262,12 @@
 /*-------------------MAPBOX MAP AND LAYERS----------------------*/   
 //Access Token
     mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
-   var bounds = [
+    var bounds = [
         [-79.999,43.385],// Southwest coordinates
         [-78.900,43.999] // Northeast coordinates
    ]
+    
+    
     
 //Add map
     if (!mapboxgl.supported()) {
@@ -282,6 +284,7 @@
             maxZoom:15,
             maxBounds:bounds
             });
+        
         }
     
     map.on('load', function() {
