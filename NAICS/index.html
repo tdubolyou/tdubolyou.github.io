@@ -30,9 +30,9 @@
         z-index: 1; /* Stay on top */
         top: 0;
         left: -300px;
-        background-color: #f2f2f2;
+        background-color: #fff;
         overflow-x: hidden; /* Disable horizontal scroll */
-        padding-top: ; /* Place content 60px from the top */
+        
         transition: 1s; /* 0.5 second transition effect to slide in the sidepanel */
         text-align: 
         }
@@ -55,24 +55,34 @@
     /* Position and style the close button (top right corner) */
     .sidepanel .closebtn {
         position: absolute;
-        top: -10px;
-        right: 5px;
+        height:100%;
+        background-color:#666;
+        right:0;
         font-size: 30px;
-        margin-left: 50px;
+        width: 30px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 30px;
+        color: white;
+        border: none;
         
+        }
+    .sidepanel .closebtn:hover {
+        background-color: #444;
         }
 
     /* Style the button that is used to open the sidepanel */
     .openbtn {
-        font-size: 40px;
+        font-size: 30px;
         cursor: pointer;
         background-color: #666;
         color: white;
-        padding: 10px 15px;
+        /*padding: 10px 15px;*/
         border: none;
         position: fixed;
         width:50px;
-        height: 100%
+        height: 100%;
+        z-index:1;
         }
 
     .openbtn:hover {
@@ -84,11 +94,13 @@
         position: relative;
         z-index: 1;
         margin: auto;
+        margin-right:55px;
         border-radius: 2px;
         width: 70%;
         height: auto;
         border: 1px solid rgba(0, 0, 0, 0.4);
         font-family: 'Lato', sans-serif;
+        
         }
 
     #menu a {
@@ -107,40 +119,53 @@
         }
  
     #menu a:hover {
-        background-color: #898989;
+        background-color: #df786c;
         color: #fff;
         }
 
     #menu a.active {
-        background-color: #898989;
+        background-color: #df786c;
         color: #ffffff;
         }
 
     #menu a.active:hover {
-        background: #898989;
+        background: #df786c;
         }
     
     #side-content {
-        font-family:'Open Sans';
-        width:100%
+        font-family:'Lato', sans-serif;
+        width:80%;
+        margin: auto;
+        text-align:center;
+        padding-right:25px
     }
     #side-content h3{
         font-family:'Lato', sans-serif;
         font-weight: 400;
         font-size:1.3em;
-        text-align: center;
+        
     }
     #side-content p{
         font-family: 'Lato', sans-serif;
         font-size: 1em;
-        text-align:center;
-        width: 75%;
-        margin: 20px auto;
-        display:relative;    
+        
+       
     }
+    #side-content a{
+        font-size:1em;
+        text-decoration:none;
+        display:inline;
+        color:lightgray;
+         }
+    #side-content a:hover{
+        color:darkgray;    
+    }
+    
+    
     #mTO-top-bar{
         
-        background-color: lightgray;
+        background-color: #fff;
+        color:#f26202;
         top:0;
         position:absolute;
         display:block;
@@ -148,24 +173,55 @@
         z-index:1
     }
     #mTO-top-bar p{
-        text-align: center;
+        text-align: right;
         font-family: 'Lato', sans-serif;
         font-weight: 600;
-        font-size:1.5em;
+        font-size:1.1em;
         margin:5px;
         padding-right:10px;
+    }
+    
+    #mTO-top-bar a{
+        text-align: right;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size:1.1em;
+        margin:5px;
+        padding-right:10px;
+        color:#f26202;
+        text-decoration:none;
+    }
+    #mTO-top-bar a:hover{
+        color:#d95700;
     }
     
     #map canvas {
         cursor: crosshair;
     }
+    
+    #legend-div{
+        font-family:'Lato', sans-serif;
+        width:70%;
+        margin: auto;
+        text-align:center;
+        padding-right:25px
+    }
+    #legend-div a{
+        color:#f26202;
+        font-size:1em;
+        font-weight:600;
+    }
     .legend{
-        width:80%;
+       width:100%;
         display:block;
         margin:auto;
-        margin-top:30px;
+        margin-top:px;
         background-color:#fff;
-        border: solid 1px lightgray
+    }
+    #legend-label{
+        margin-bottom:10px;
+        margin-top:30px;
+        width:100%;
     }
     
     
@@ -176,20 +232,25 @@
     
 <body>
 <div id='mTO-top-bar'>
-    <p>mapTO</p>
+    <p><a href='www.mapto.ca'>mapTO</a></p>
 
 </div>
 <div id="map"></div>  
-<button class="openbtn" onclick="openNav()">></button>
+<button class="openbtn" onclick="openNav()">&#9432;</button>
 <div id="mySidepanel" class="sidepanel">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <button class="closebtn" onclick="closeNav()">&times;</button>
+<!--    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
     <div id="side-content"> 
-        <h3>The Geography of<br>Employment<br></h3>
-        <p>Employment category (NAICS) by place of residence, 2016</p>
+        <h3>What Does Toronto<br>Do For Work?<br></h3>
+        <p>We mapped 2016 census data showing what percent of the population works in various industries.<br> Jobs are classified using the North American Industrial Classification System (<a href='https://www23.statcan.gc.ca/imdb/p3VD.pl?Function=getVD&TVD=1181553'>NAICS</a>).</p>
+        <p><b>Click on industry to update map</b></p>
     </div>
     <nav id="menu"></nav>
-    <img src="legend-01.png" class='legend'>
-    
+    <div id='legend-div'>
+        <p id='legend-label'>Percent of the population working in selected industry</p>
+        <img src="legend-01.png" class='legend'>
+        <p>Brought to you by<br><a href='www.mapto.ca'>mapTO.ca</a></p>
+    </div>
 </div>
 <script>
  
@@ -197,6 +258,10 @@
 /*-------------------MAPBOX MAP AND LAYERS----------------------*/   
 //Access Token
     mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+   var bounds = [
+        [-79.999,43.385],// Southwest coordinates
+        [-78.900,43.999] // Northeast coordinates
+   ]
     
 //Add map
     if (!mapboxgl.supported()) {
@@ -211,6 +276,7 @@
             zoom: 11, // starting zoom
             minZoom:10,
             maxZoom:15,
+            maxBounds:bounds
             });
         }
     
@@ -931,7 +997,7 @@
                 .setHTML(
                         '<p style="color:#9a9a9a;margin-top:0px">Percentage working in</p>' +
                         '<p style="margin-top:-12px">' + activeLayer + '</p>' +
-                        '<span style="font-weight:bold;font-size:30px">' + dataField + '%' + '</span>'
+                        '<span style="font-weight:bold;font-size:22px">' + dataField + '%' + '</span>'
                         )
                 .addTo(map);
     };
