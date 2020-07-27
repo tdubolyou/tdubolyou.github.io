@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>mapTO: Registered Condos, 2002-2018</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
+  
+<style>
+    html{
+        height:100%
+    }
+    body { 
+        margin: 0; 
+        padding: 0;
+        overflow: auto;
+        height:100%
+        }
+
+    #map { 
+        position: absolute; 
+        top: 0; bottom: 0; 
+        width: 100%; 
+        }
+   
+    .mapboxgl-popup {
+        max-width: 500px;
+        
+
+    }
+    
+     .mapboxgl-popup p{
+        font: 'Lato', sans-serif;
+        margin-top:5px;
+        padding: auto
+    }
+    
+     .mapboxgl-popup .sub{
+        font: 'Lato', sans-serif;
+        margin-top:-5px;
+        padding: auto;
+         color:#757575;
+    }
+
+
+
+    /* The sidepanel menu */
+    .sidepanel {
+        min-height: 100%; /* Specify a height */
+        width: 300px; /* 0 width - change this with JavaScript */
+        position: absolute; /* Stay in place */
+        z-index: 1; /* Stay on top */
+        top: 0;
+        left: -300px;
+        background-color: #efefef;
+        overflow-x: hidden; /* Disable horizontal scroll */
+        transition: 1s; /* 0.5 second transition effect to slide in the sidepanel */
+        
+        }
+
+    /* The sidepanel links */
+    .sidepanel a {
+        padding: 4px 4px 4px 4px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+        }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidepanel a:hover {
+        color: #bfbfbf;
+        }
+
+    /* Position and style the close button (top right corner) */
+    .sidepanel .closebtn {
+        position: absolute;
+        height: 50px;
+        background-color:#efefef;
+        right:0;
+        font-size: 30px;
+        width: 30px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 30px;
+        color: #f26202;
+        border: none
+        
+        
+        }
+    .sidepanel .closebtn:hover {
+        background: #d95700;
+        }
+
+    /* Style the button that is used to open the sidepanel */
+    .openbtn {
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #f26202;
+        color: white;
+        padding-right:10px;
+        border: none;
+        position: fixed;
+        width:75px;
+        height: 40px;
+        z-index:1;
+        margin-top:40px;
+        margin-left: 10px;
+        border-radius:8px;
+        text-align: center
+        }
+
+    .openbtn:hover {
+        background-color: #d95700;
+        }
+   
+    
+    #side-content {
+        font-family:'Lato', sans-serif;
+        width:80%;
+        margin: auto;
+        text-align:center;
+        padding-right:25px
+    }
+    #side-content h3{
+        margin-top: 50px;
+        font-family:'Lato', sans-serif;
+        font-weight: 400;
+        font-size:1.3em;
+        
+    }
+    #side-content p{
+        font-family: 'Lato', sans-serif;
+        font-size: 1em;
+        
+       
+    }
+    #side-content a{
+        font-size:1em;
+        text-decoration:none;
+        display:inline;
+        color:lightgray;
+         }
+    #side-content a:hover{
+        color:darkgray;    
+    }
+    
+    
+    #mTO-top-bar{
+        
+        background-color: #efefef;
+        color:#f26202;
+        top:0;
+        position:absolute;
+        display:block;
+        width:100%;
+        z-index:1
+    }
+    #mTO-top-bar p{
+        text-align: right;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size:1.1em;
+        margin:5px;
+        padding-right:10px;
+    }
+    
+    #mTO-top-bar a{
+        text-align: right;
+        font-family: 'Lato', sans-serif;
+        font-weight: 600;
+        font-size:1.1em;
+        margin:5px;
+        padding-right:10px;
+        color:#f26202;
+        text-decoration:none;
+    }
+    #mTO-top-bar a:hover{
+        color:#d95700;
+    }
+    
+    #map canvas {
+        cursor: crosshair;
+    }
+    
+    #legend-div{
+        font-family:'Lato', sans-serif;
+        width:70%;
+        margin: auto;
+        text-align:center;
+        padding-right:25px
+    }
+    #legend-div a{
+        color:#f26202;
+        font-size:1em;
+        font-weight:600;
+    }
+    .legend{
+       width:100%;
+        display:block;
+        margin:auto;
+        margin-top:px;
+        
+    }
+    #legend-label{
+        margin-bottom:10px;
+        margin-top:30px;
+        width:100%;
+    }
+    #activeLayer{
+        z-index:1;
+        position: fixed;
+        margin-top:5%;
+        margin-right: 25%;
+        text-align: center;
+        height:50px;
+        width:50%;
+        background-color:lightgray;
+        right:0;
+        color:black;
+        
+    }
+    
+    </style>    
+</head>
+
+
+    
+<body>
+<div id='mTO-top-bar'>
+    <p><a href='https://www.mapto.ca' target="_blank">mapTO</a></p>
+</div>
+<div id="map"></div>  
+<button class="openbtn" onclick="openNav()">&#9432;</button>
+<div id="mySidepanel" class="sidepanel">
+    <button class="closebtn" onclick="closeNav()">&times;</button>
+<!--    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>-->
+    <div id="side-content"> 
+        <h3>Registered Condominiums<br>in Toronto, 2002-2018</h3>
+        <p>We mapped the City of Toronto's brand new open data file showing registered residential and non-residential Condos. <br>(<a href='https://open.toronto.ca/dataset/registered-residential-non-residential-condominiums/'>Data source</a>).</p>
+    </div>
+    
+    <nav id="menu"></nav>
+    
+    <div id='legend-div'>
+        <p id='legend-label'>Number of units (click on map for exact value)</p>
+        <img src="https://user-images.githubusercontent.com/8647754/88591572-895d0500-d02a-11ea-832c-9ae83a34be2d.png" class='legend'>
+        <p>Brought to you by<br><a href='https://www.mapto.ca' target="_blank">mapTO.ca</a></p>
+    </div>
+</div>
+<script>
+ 
+    
+/*-------------------MAPBOX MAP AND LAYERS----------------------*/   
+//Access Token
+    mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+    var bounds = [
+        [-79.999,43.385],// Southwest coordinates
+        [-78.900,43.999] // Northeast coordinates
+   ]
+    
+    
+    
+//Add map
+    if (!mapboxgl.supported()) {
+        alert('Your browser does not support Mapbox GL');
+    } else {
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/tweatherburn/ckd4nczum17ml1jpt3jtm8kx2', // stylesheet location
+            center: [-79.386787,43.670203], // starting position [lng, lat]
+            bearing: -16.5,
+            pitch: 0,
+            zoom: 10.5, // starting zoom
+            minZoom:10,
+            maxZoom:15,
+            maxBounds:bounds
+            });
+        
+        }
+    
+    map.on('load', function() {
+        
+        map.addSource('CONDOS-RES', {
+            'type': 'vector',
+            'url': 'mapbox://tweatherburn.aclmr47t'
+        });
+        
+         map.addSource('CONDOS-NON-RES', {
+            'type': 'vector',
+            'url': 'mapbox://tweatherburn.a6na2c9b'
+        });
+        
+
+        
+        //RESIDENTIAL CONDOS 
+        map.addLayer({
+            'id': 'res-condos',
+            'type': 'circle',
+            'source': 'CONDOS-RES',
+            'source-layer':'condos_res',
+            'layout': {
+                'visibility': 'visible'},
+            'paint': {
+                'circle-radius':
+                       {
+                        property: 'TOTAL_UNITS',
+                        type: 'exponential',
+                        stops: [
+                          [0, 2],
+                          [400, 10]
+                        ]
+                    },
+                 'circle-opacity': 0.5,                                     
+                 'circle-color': '#3238a8',
+                 'circle-stroke-width': 1,
+                 'circle-stroke-color': '#fff',
+                 'circle-stroke-opacity':0.2
+                }
+            }, 'settlement-subdivision-label');
+
+    
+
+
+        map.on('click', 'res-condos', function(e) {
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(
+                    "<p><b>Site Address: </b>"+ e.features[0].properties.Street_No + " " + e.features[0].properties.Street_Name + "<br></p>" + 
+                    "<p><b>Total Units: </b>" + e.features[0].properties.TOTAL_UNITS + "<br></p>" +
+                    "<p class='sub'><b>Studio: </b>" + e.features[0].properties.STUDIO + "<br></p>" +
+                    "<p class='sub'><b>1 Bedroom: </b>" + e.features[0].properties.BEDROOM1 + "<br></p>" +
+                    "<p class='sub'><b>2 Bedroom: </b>" + e.features[0].properties.BEDROOM2 + "<br></p>" +
+                    "<p class='sub'><b>3 Bedroom+: </b>" + e.features[0].properties.BEDROOM3PL + "<br></p>" +
+                    "<p><b>Date of Registration: </b>" + e.features[0].properties.Date_of_Registration + "<br></p>" 
+                )
+                .addTo(map);
+        });
+
+//        map.on('mouseleave', 'res-condos', function() {
+//            popup.remove();
+//        });
+    });
+   
+/*----------------------- MAP CONTROLS --------------------------*/
+// Add zoom and rotation controls to the map.
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'bottom-right');
+
+
+/*// Add geolocate control to the map.
+    map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+            enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        })
+    );*/
+
+/*-----------------------SIDEBAR FUNCTION--------------------------*/
+    //Set the width of the sidebar to 250px (show it) */
+    function openNav() {
+      // document.getElementById("mySidepanel").style.width = "300px";
+      document.getElementById("mySidepanel").style.left = "0";
+    }
+
+    //Set the width of the sidebar to 0 (hide it) */
+    function closeNav() {
+      // document.getElementById("mySidepanel").style.width = "0";
+      document.getElementById("mySidepanel").style.left = "-300px";
+    }
+    
+    
+/*-----------------------LAYER TOGGLE MENU-------------------------*/
+
+  
+
+    
+</script>
+
+</body>
+</html>
