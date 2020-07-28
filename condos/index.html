@@ -28,7 +28,7 @@
         }
    
     .mapboxgl-popup {
-        max-width: 500px;
+        max-width: 550px;
         
 
     }
@@ -56,7 +56,7 @@
         z-index: 1; /* Stay on top */
         top: 0;
         left: -300px;
-        background-color: #efefef;
+        background-color: #f7f7f7;
         overflow-x: hidden; /* Disable horizontal scroll */
         transition: 1s; /* 0.5 second transition effect to slide in the sidepanel */
         
@@ -81,7 +81,7 @@
     .sidepanel .closebtn {
         position: absolute;
         height: 50px;
-        background-color:#efefef;
+        background-color:#f7f7f7;
         right:0;
         font-size: 30px;
         width: 30px;
@@ -89,12 +89,13 @@
         text-align: center;
         font-size: 30px;
         color: #f26202;
-        border: none
+        border: none;
+        margin-right:5px
         
         
         }
     .sidepanel .closebtn:hover {
-        background: #d95700;
+        color: #d95700;
         }
 
     /* Style the button that is used to open the sidepanel */
@@ -103,13 +104,12 @@
         cursor: pointer;
         background-color: #f26202;
         color: white;
-        padding-right:10px;
         border: none;
         position: fixed;
-        width:75px;
+        width:40px;
         height: 40px;
         z-index:1;
-        margin-top:40px;
+        margin-top:45px;
         margin-left: 10px;
         border-radius:8px;
         text-align: center
@@ -153,7 +153,7 @@
     
     #mTO-top-bar{
         
-        background-color: #efefef;
+        background-color: #f7f7f7;
         color:#f26202;
         top:0;
         position:absolute;
@@ -201,7 +201,7 @@
         font-weight:600;
     }
     .legend{
-       width:100%;
+       width:80%;
         display:block;
         margin:auto;
         margin-top:px;
@@ -248,7 +248,7 @@
     <nav id="menu"></nav>
     
     <div id='legend-div'>
-        <p id='legend-label'>Number of units (click on map for exact value)</p>
+        <p id='legend-label'>Number of units <br>(click on points for exact values)</p>
         <img src="https://user-images.githubusercontent.com/8647754/88591572-895d0500-d02a-11ea-832c-9ae83a34be2d.png" class='legend'>
         <p>Brought to you by<br><a href='https://www.mapto.ca' target="_blank">mapTO.ca</a></p>
     </div>
@@ -273,10 +273,10 @@
         var map = new mapboxgl.Map({
             container: 'map', // container id
             style: 'mapbox://styles/tweatherburn/ckd4nczum17ml1jpt3jtm8kx2', // stylesheet location
-            center: [-79.386787,43.670203], // starting position [lng, lat]
+            center: [-79.405, 43.695], // starting position [lng, lat]
             bearing: -16.5,
             pitch: 0,
-            zoom: 10.5, // starting zoom
+            zoom: 11, // starting zoom
             minZoom:10,
             maxZoom:15,
             maxBounds:bounds
@@ -313,7 +313,9 @@
                         type: 'exponential',
                         stops: [
                           [0, 2],
-                          [400, 10]
+                          [400, 10],
+                          [800, 15],
+                          [2000, 25]    
                         ]
                     },
                  'circle-opacity': 0.5,                                     
@@ -341,7 +343,15 @@
                 )
                 .addTo(map);
         });
-
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'res-condos', function() {
+            map.getCanvas().style.cursor = 'pointer';
+            });
+ 
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'res-condos', function() {
+            map.getCanvas().style.cursor = 'crosshair';
+            });
 //        map.on('mouseleave', 'res-condos', function() {
 //            popup.remove();
 //        });
@@ -375,7 +385,7 @@
       // document.getElementById("mySidepanel").style.width = "0";
       document.getElementById("mySidepanel").style.left = "-300px";
     }
-    
+    openNav()
     
 /*-----------------------LAYER TOGGLE MENU-------------------------*/
 
