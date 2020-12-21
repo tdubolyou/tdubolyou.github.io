@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Display a map</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+
+<style>
+	body { 
+        margin: 0; 
+        padding: 0; 
+    }
+	#map { 
+        position: absolute; 
+        top: 0; 
+        bottom: 0; 
+        width: 100%; 
+    }
+    
+    #tooltipWrap {
+        display: block;
+        position: absolute;
+        top:10px;
+        right:10px;
+        width:80px;
+        padding:5px;
+        border-radius: 10px;
+        color:#fff;
+        z-index:100;
+        opacity: 0;
+        text-align: center;
+        background-color: #fff;
+          -webkit-transition: opacity 0.5s ease-in-out;
+          -moz-transition: opacity 0.5s ease-in-out;
+          -ms-transition: opacity 0.5s ease-in-out;
+          -o-transition: opacity 0.5s ease-in-out;
+    }
+    
+    #tooltip1 p{
+        color: #000;
+        font-size:20px;
+        font-family: 'Roboto', sans-serif
+    }
+    #text{
+        color: #000;
+        font-size:12px;
+        font-family: 'Roboto', sans-serif
+    }
+    
+    #mapTO{
+        display: block;
+        position: absolute;
+        top:10px;
+        left:10px;
+        width:50px;
+        padding:10px;
+        border-radius: 10px;
+        color:#fff;
+        z-index:100;
+        font-family: 'Roboto', sans-serif;
+        text-align: center;
+        background-color: orangered;
+    }
+    #mapTO a{
+        color:#fff;
+        text-decoration: none;
+        
+    }
+</style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="mapTO"><a href="https:\\www.mapto.ca" target = "blank">mapTO</a></div>
+    <div id = "tooltipWrap">
+        <div id = "tooltip1"></div>
+        <div id = "tooltip2"></div>
+    </div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+    
+    //Set the bounds of the map to the area surrounding Aldershot High School
+    var bounds = [
+        [-79.860,43.296],
+        [-79.840,43.310],
+    ]
+    
+    //Add a new map
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/tweatherburn/ckiv472d43i0j19p0fr9ywogv', // style URL
+        center: [-79.850,43.302], // starting position [lng, lat]
+        zoom: 15.95, // starting zoom
+        maxZoom: 18,
+        minZoom: 15,
+        maxBounds: bounds
+    });
+    
+    
+    map.on('load', function() {
+        map.addSource('contours-src', {
+            'type': 'vector',
+            'url': 'mapbox://tweatherburn.1p20ibbk'
+             });
+    
+        map.addLayer({
+            'id': 'contours',
+            'type': 'line',
+            'source': 'contours-src',
+            'source-layer':'Contours-shp-84jqmj',
+            'layout': {
+                'visibility': 'visible'},
+            'paint': {
+                'line-width': 5,
+                'line-color': '#fff',
+                'line-opacity': 0
+                }
+             });
+         
+        map.addLayer({
+            'id': 'contours_vis',
+            'type': 'line',
+            'source': 'contours-src',
+            'source-layer':'Contours-shp-84jqmj',
+            'layout': {
+                'visibility': 'visible'},
+            'paint': {
+                'line-width': 0.5,
+                'line-color': '#818181',
+                'line-opacity': 0.85
+                }
+             });
+        
+        map.addLayer({
+            'id': 'contours_hv',
+            'type': 'line',
+            'source': 'contours-src',
+            'source-layer':'Contours-shp-84jqmj',
+            'paint': {
+                'line-width': 1,
+                'line-color': 'orangered',
+                'line-opacity': 0.85
+                },
+            'filter': [ 'all',
+                [ '==', 'OBJECTID_1', 'NONE' ] // start with a filter that doesn't select anything
+                ]
+             });
+        });
+   
+    map.on('mousemove', function (e) {
+        var features = map.queryRenderedFeatures(e.point, {
+            layers: ['contours']
+            });
+        
+        if (features.length) {
+            
+            document.getElementById('tooltipWrap').style.opacity = 1;
+            map.getCanvas().style.cursor = 'crosshair';
+            document.getElementById('tooltip1').innerHTML = "<p>"+features[0].properties.ZVALUE+" m</p>"; //show name and value in sidebar
+            //document.getElementById('tooltip2').innerHTML = "<p>"+features[0].properties.OBJECTID_1+"</p>"; //show name and value in sidebar
+            //Set hover ID
+            console.log(features[0].properties.OBJECTID_1)
+            map.setFilter('contours_hv', ['==', ['get', 'OBJECTID_1'], features[0].properties.OBJECTID_1]);
+        } else {
+            timeout = setTimeout(function() {
+                document.getElementById('tooltipWrap').style.opacity = 0;    
+            });
+
+        };
+      });
+    
+    
+    
+    
+</script>
+
+</body>
+</html>
