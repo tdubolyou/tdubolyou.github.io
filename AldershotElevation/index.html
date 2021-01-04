@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Aldershot Elevation Map</title>
+<title>Display a map</title>
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
@@ -101,6 +101,11 @@
         maxBounds: bounds
     });
     
+    var nav = new mapboxgl.NavigationControl();
+    map.addControl(nav, 'bottom-right');
+    map.addControl(new mapboxgl.ScaleControl({position: 'bottom-left'}));
+
+
     
     map.on('load', function() {
         map.addSource('contours-src', {
