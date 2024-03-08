@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Large Terry's Weekly Meal Planning App</title>
+        <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 120px;
+            background-image: url('../mealplan/img/bg_ls_72.jpg');
+            background-size: contain; /* Cover the area without zooming in excessively */
+            background-attachment: fixed; /* Keep the background fixed during scrolling */
+            background-position: center center; /* Center the background image */
+            background-repeat: no-repeat;
+            font-family: futura-pt, sans-serif;
+            font-style: normal;
+            font-weight: 300;
+        }
+
+        /* .button-56 {
+            background-color: #064420;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        } */
+
+        /* .button-56:hover, #list:hover, #copylist:hover {
+            background-color: #026635; /* Lighter green for hover effect 
+        } */
+
+        .meal-section {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            margin:20px;
+            
+
+        }
+
+        #shoppingList {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #shoppingList li {
+            background-color: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            /* width: 90%;  */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        
+        .button-56 {
+            align-items: center;
+            background-color: #fee6e3;
+            border: 2px solid #111111;
+            border-radius: 8px;
+            box-sizing: border-box;
+            color: #111;
+            cursor: pointer;
+            display: flex;
+            font-family: Inter,sans-serif;
+            font-size: 16px;
+            height: 48px;
+            justify-content: center;
+            line-height: 24px;
+            max-width: 100%;
+            padding: 0 25px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            margin-top:25px;
+            
+            }
+
+        .button-56:after {
+            background-color: #111;
+            border-radius: 8px;
+            content: "";
+            display: block;
+            height: 48px;
+            left: 0;
+            width: 100%;
+            position: absolute;
+            top: -2px;
+            transform: translate(8px, 8px);
+            transition: transform .2s ease-out;
+            z-index: -1;
+            }
+
+        .button-56:hover:after {
+            transform: translate(0, 0);
+            }
+
+        .button-56:active {
+            background-color: #ffdeda;
+            outline: 0;
+            }
+
+        .button-56:hover {
+            outline: 0;
+            }
+
+        #list, #copylist{
+            display:none;
+        }
+
+        #generate{
+            margin-top:20%;
+        }
+   
+        .meal {
+            background-color: #ffffff;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            margin: 5px;
+            
+        }
+        .parents{
+            border-left: 10px solid #0d8a09; /* Green for kids */
+            /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 1);  */
+        }
+
+        .kids{
+            border-left: 10px solid #df6e12; /* Green for kids */
+            /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 1);  */
+        }
+        .copy-confirmation {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position to make it stay in place even when scrolling */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust position to truly center the div */
+            background-color: #f3f3f3; /* Dark green background */
+            color: rgb(116, 116, 116); /* White text */
+            padding: 10px 20px; /* Padding around the text */
+            border-radius: 5px; /* Rounded corners */
+            /* border: 1px solid #4d4d4d; */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for better visibility */
+            z-index: 1000; /* Ensure it's on top of everything else */
+            opacity: 1; /* Start fully transparent */
+            transition: opacity 1s ease; /* Smooth transition for the opacity */
+        }
+
+        .meal select {
+            width: 100%; /* Make the select element take up all available width of its parent */
+            max-width: 100%; /* Prevent the select from exceeding the width of the meal div */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        
+        /* Media query for iPad Air */
+            @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+                body {
+                    padding-top: 100px; /* Adjust padding for iPad */
+                    background-image: url('../mealplan/img/bg_ls_72.jpg');
+                    background-size: cover; /* Cover the area without zooming in excessively */
+                    
+                    
+                }
+            }
+
+            /* Media query for iPhone 15 (Assuming a modern iPhone resolution) */
+            @media only screen and (min-device-width: 375px) and (max-device-width: 812px) {
+                body {
+                    padding-top: 80px; /* Adjust padding for modern iPhones */
+                    background-image: url('../mealplan/img/bg_p_72.jpg');
+                    
+                }
+
+                .button-56, #list, #copylist {
+                    font-size: 14px; /* Adjust font size for smaller screens */
+                }
+
+                .meal-section {
+                    gap: 10px; /* Reduce gap for smaller screens */
+                }
+                .meal{
+                    max-width: 150px;
+                }
+
+              
+            }
+
+            /* Media query for iPhone SE */
+            @media only screen and (min-device-width: 320px) and (max-device-width: 568px) {
+                body {
+                    padding-top: 60px; /* Adjust padding for iPhone SE */
+                    background-image: url('../mealplan/img/bg_p_72.jpg');
+                    background-size: cover; /* Cover the area without zooming in excessively */
+                    background-attachment: fixed; /* Keep the background fixed during scrolling */
+                    background-position: center center; /* Center the background image */
+                    background-repeat: no-repeat;
+                }
+
+                .button-56, #list, #copylist {
+                    padding: 8px 16px; /* Reduce padding for smaller buttons */
+                    font-size: 12px; /* Reduce font size for smaller screens */
+                }
+
+                .meal-section {
+                    flex-direction: column; /* Stack meal cards vertically */
+                    max-width:50%;
+                }
+            }
+
+
+
+
+
+        
+
+    
+    </style>
+</head>
+<body>
+    <!-- <h1>Large Terry's Weekly Meal Planning App</h1> -->
+    <button class=button-56 role='button' id='generate' onclick="generateMealPlan()">Generate Meal Plan</button>
+    <div id="parentMeals" class="meal-section"></div>
+    <div id="kidMeals" class="meal-section"></div>
+    <button class='button-56' id='list'onclick="generateShoppingList()" style="margin-top: 10px;">Create List</button>
+
+    <button class="button-56" id='copylist'onclick="copyShoppingListToClipboard()" style="margin-top: 10px;">Copy List</button>
+    <ul id="shoppingList"></ul>
+    <div id="copyConfirmation" class="copy-confirmation">Copied to clipboard!</div>
+
+
+
+    <script>
+        let allMeals = [];
+        const API_KEY = 'AIzaSyCHUoQi9eFnXq6qMeEsprCHIpSJefZXBNM'; // Replace with your API key
+        const SPREADSHEET_ID = '1r8yNjyMo2AiBs3hPPB942BIWze-DituBXvBEHO39EX8'; // Replace with your Google Sheet ID
+        const RANGE = 'Meals'; // The name of your sheet and range (e.g., Sheet1!A1:D)
+
+        fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+            allMeals = data.values.map(row => ({
+            name: row[0], // Assuming the meal name is in the first column
+            category: row[1], // Assuming the category is in the second column
+            eater: row[2], // Assuming the eater info is in the third column
+            ingredients: row[3].split(', ') // Assuming ingredients are in the fourth column
+            }));
+            console.log("fetched and processed meals: ", allMeals);
+            // You can now use meals similar to your allMeals variable
+        })
+        .catch(error => console.error('Error fetching Google Sheets data:', error));
+        console.log(allMeals);
+        // const allMeals = [
+        // { name: "Spaghetti Bolognese", category: "Pasta", eater: "Kids", ingredients: ["Spaghetti", "Ground Beef", "Tomato Sauce", "Onion", "Garlic"] },
+        //     { name: "Chicken Curry", category: "Curry", eater: "Parents", ingredients: ["Chicken Breast", "Curry Powder", "Coconut Milk", "Rice", "Onion"] },
+        //     { name: "Beef Tacos", category: "Mexican", eater: "Kids", ingredients: ["Ground Beef", "Taco Shells", "Cheese", "Lettuce", "Tomato"] },
+        //     { name: "Vegetarian Pizza", category: "Italian", eater: "Kids", ingredients: ["Pizza Dough", "Tomato Sauce", "Mozzarella Cheese", "Bell Peppers", "Mushrooms"] },
+        //     { name: "Salmon Teriyaki", category: "Japanese", eater: "Parents", ingredients: ["Salmon Fillets", "Teriyaki Sauce", "Rice", "Broccoli"] },
+        //     { name: "Caesar Salad", category: "Salad", eater: "Parents", ingredients: ["Romaine Lettuce", "Croutons", "Parmesan Cheese", "Caesar Dressing", "Chicken Breast"] },
+        //     { name: "Quiche Lorraine", category: "French", eater: "Parents", ingredients: ["Pie Crust", "Eggs", "Heavy Cream", "Bacon", "Swiss Cheese"] },
+        //     { name: "Lamb Gyros", category: "Greek", eater: "Parents", ingredients: ["Lamb", "Pita Bread", "Tzatziki Sauce", "Onion", "Tomato"] },
+        //     { name: "Pad Thai", category: "Thai", eater: "Parents", ingredients: ["Rice Noodles", "Eggs", "Tofu", "Peanuts", "Bean Sprouts"] },
+        //     { name: "Vegetable Stir Fry", category: "Chinese", eater: "Kids", ingredients: ["Mixed Vegetables", "Soy Sauce", "Rice", "Garlic", "Ginger"] },
+        //     { name: "Butter Chicken", category: "Indian", eater: "Parents", ingredients: ["Chicken Thighs", "Butter", "Cream", "Tomato Puree", "Garam Masala"] },
+        //     { name: "Fish and Chips", category: "British", eater: "Kids", ingredients: ["Fish Fillets", "Potatoes", "Flour", "Beer", "Peas"] },
+        //     { name: "Ratatouille", category: "French", eater: "Parents", ingredients: ["Eggplant", "Zucchini", "Bell Pepper", "Tomato", "Onion"] },
+        //     { name: "Lasagna", category: "Italian", eater: "Kids", ingredients: ["Lasagna Noodles", "Ground Beef", "Ricotta Cheese", "Tomato Sauce", "Mozzarella Cheese"] },
+        //     { name: "French Onion Soup", category: "French", eater: "Parents", ingredients: ["Onions", "Beef Broth", "French Bread", "Gruyere Cheese", "Thyme"] },
+        //     { name: "Chicken Alfredo", category: "Italian", eater: "Kids", ingredients: ["Fettuccine", "Chicken Breast", "Heavy Cream", "Parmesan Cheese", "Garlic"] },
+        //     { name: "Beef Stroganoff", category: "Russian", eater: "Parents", ingredients: ["Beef Sirloin", "Mushrooms", "Onion", "Sour Cream", "Beef Broth"] },
+        //     { name: "Tofu Curry", category: "Indian", eater: "Parents", ingredients: ["Tofu", "Coconut Milk", "Curry Powder", "Chickpeas", "Spinach"] },
+        //     { name: "Pulled Pork Sandwich", category: "American", eater: "Kids", ingredients: ["Pork Shoulder", "BBQ Sauce", "Buns", "Coleslaw", "Pickles"] },
+        //     { name: "Shakshuka", category: "Middle Eastern", eater: "Parents", ingredients: ["Eggs", "Tomato Sauce", "Bell Pepper", "Onion", "Cumin"] }
+        // ];
+
+        let selectedMeals = []; // To keep track of user-selected or randomly selected meals for the shopping list
+
+        function generateMealPlan() {
+            document.getElementById("parentMeals").innerHTML = '';
+            document.getElementById("kidMeals").innerHTML = '';
+            selectedMeals = []; // Reset selected meals array
+
+            const parentsMeals = selectMealsByEater("Parents", 5);
+            const kidsMeals = selectMealsByEater("Kids", 5);
+
+            displayMeals(parentsMeals, "parentMeals");
+            displayMeals(kidsMeals, "kidMeals");
+
+            selectedMeals = [...parentsMeals, ...kidsMeals];
+            document.getElementById("list").style.display = "inline-block";
+            
+            document.getElementById("generate").style.marginTop = 0
+        }
+
+        function selectMealsByEater(eaterType, count) {
+            return allMeals.filter(meal => meal.eater === eaterType)
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, count);
+        }
+
+        function displayMeals(meals, containerId) {
+            const container = document.getElementById(containerId);
+
+            meals.forEach((meal, index) => {
+                const mealIndex = selectedMeals.findIndex(m => m.name === meal.name && m.eater === meal.eater);
+                const mealDiv = document.createElement("div");
+                mealDiv.classList.add("meal", meal.eater.toLowerCase());
+
+                const name = document.createElement("h3");
+                name.textContent = meal.name;
+
+                const category = document.createElement("p");
+                category.textContent = `Category: ${meal.category}`;
+
+                const eater = document.createElement("p");
+                eater.textContent = `For: ${meal.eater}`;
+
+                const mealSelector = document.createElement("select");
+                mealSelector.onchange = () => updateMealSelection(mealSelector, mealIndex);
+
+                allMeals.filter(m => m.eater === meal.eater).forEach((m) => {
+                    const option = document.createElement("option");
+                    option.value = m.name;
+                    option.textContent = m.name;
+                    option.selected = m.name === meal.name;
+                    mealSelector.appendChild(option);
+                });
+
+                mealDiv.appendChild(name);
+                mealDiv.appendChild(category);
+                //mealDiv.appendChild(eater);
+                mealDiv.appendChild(mealSelector);
+
+                container.appendChild(mealDiv);
+            });
+        }
+
+        function updateMealSelection(selector, mealIndex) {
+            const selectedMealName = selector.value;
+            const updatedMeal = allMeals.find(meal => meal.name === selectedMealName);
+            selectedMeals[mealIndex] = updatedMeal;
+
+            // Refresh the meal display to reflect the newly selected meal
+            const containerId = updatedMeal.eater === "Kids" ? "kidMeals" : "parentMeals";
+            document.getElementById(containerId).innerHTML = ''; // Clear the container
+            displayMeals(selectedMeals.filter(meal => meal.eater === updatedMeal.eater), containerId);
+        }
+
+        function generateShoppingList() {
+            const shoppingListSet = new Set();
+            selectedMeals.forEach(meal => {
+                meal.ingredients.forEach(ingredient => shoppingListSet.add(ingredient));
+            });
+            displayShoppingList([...shoppingListSet]);
+        }
+
+        function displayShoppingList(ingredients) {
+            const shoppingListUl = document.getElementById("shoppingList");
+            shoppingListUl.innerHTML = ''; // Clear existing list
+            ingredients.forEach(ingredient => {
+                const li = document.createElement("li");
+                li.textContent = ingredient;
+                shoppingListUl.appendChild(li);
+            });
+            document.getElementById("copylist").style.display = "inline-block";
+        }
+
+        function copyShoppingListToClipboard() {
+            const shoppingListItems = document.querySelectorAll('#shoppingList li');
+            const shoppingListText = Array.from(shoppingListItems).map(li => li.textContent).join('\n');
+            
+            navigator.clipboard.writeText(shoppingListText).then(() => {
+                //alert('Shopping list copied to clipboard!');
+                const copyConfirmation = document.getElementById("copyConfirmation");
+                copyConfirmation.style.display = "block";
+                setTimeout(() => { copyConfirmation.style.opacity = "1"; }, 10); // Slightly delay opacity change for transition
+
+                // Automatically hide the popup after 1 second
+                setTimeout(() => {
+                    copyConfirmation.style.opacity = "0";
+                    setTimeout(() => {
+                        copyConfirmation.style.display = "none";
+                    }, 1000); // Delay to allow opacity transition to finish
+                }, 500);
+            }).catch(err => {
+                console.error('Failed to copy shopping list to clipboard: ', err);
+            });
+        }
+
+        // Generate initial meal plan on page load
+        //window.onload = generateMealPlan;
+    </script>
+</body>
+</html>
