@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Crime Data Visualization</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet'>
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<div id='legend' style='position: absolute; bottom: 30px; left: 10px; padding: 10px; background: white; box-shadow: 0 0 15px rgba(0,0,0,0.2); z-index: 1;'></div>
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoidHdlYXRoZXJidXJuIiwiYSI6IllqeWNoS28ifQ.LX7mJDglVdZODqd25Z8aeg';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [-79.3832, 43.6532], // Example center: Toronto
+    zoom: 10
+});
+
+function updateLegend(colors) {
+    const legend = document.getElementById('legend');
+    legend.innerHTML = ''; // Clear current legend
+    Object.keys(colors).forEach(function(category) {
+        const color = colors[category];
+        const item = document.createElement('div');
+        item.innerHTML = `<span style='background-color: ${color}; width: 15px; height: 15px; margin-right: 5px; display: inline-block; vertical-align: middle;'></span> ${category}`;
+        legend.appendChild(item);
+    });
+}
+
+map.on('load', function() {
+    map.addSource('crimeData', {
+        type: 'geojson',
+        data: 'https://services.arcgis.com/S9th0jAJ7bqgIRjw/arcgis/rest/services/Major_Crime_Indicators_Open_Data/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson'
+    });
+
+    // Define a color for each MCI Category
+    var colors = {
+        'Assault': '#FF0000',
+        'Break and Enter': '#00FF00',
+        'Robbery': '#0000FF',
+        'Theft Over': '#FFFF00',
+        // Add more categories and colors as needed
+    };
+
+    Object.keys(colors).forEach(function(category) {
+        map.addLayer({
+            'id': category,
+            'type': 'circle',
+            'source': 'crimeData',
+            'paint': {
+                'circle-radius': 5,
+                'circle-color': colors[category]
+            },
+            'filter': ['==', ['get', 'MCI_CATEGORY'], category]
+        });
+    });
+    updateLegend(colors);
+});
+</script>
+</body>
+</html>
