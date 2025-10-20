@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>City Planning Network — Divisions • Units • Individuals</title>
+
+  <!-- D3 v7 (includes d3-fetch and d3-dsv for d3.csv / d3.csvParse) -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    /* ====== Layout & UI ====== */
+    :root {
+      --bg: #fafafa;
+      --panel: #ffffff;
+      --text: #222;
+      --subtle: #666;
+      --link: #999;
+      --division: #1f77b4;  /* blue */
+      --unit:     #2ca02c;  /* green */
+      --person:   #ff7f0e;  /* orange */
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--panel);
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .toolbar h1 {
+      font-size: 16px;
+      margin: 0 16px 0 0;
+      font-weight: 600;
+    }
+    .spacer { flex: 1; }
+    .status {
+      font-size: 12px;
+      color: var(--subtle);
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--panel);
+      margin: 8px 14px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      font-size: 12px;
+      color: var(--subtle);
+    }
+  .legend .dot.city { background: #000 }
+    .legend .dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: -1px;
+    }
+
+    /* ====== Chart ====== */
+    #chart {
+      height: calc(100vh - 84px); /* toolbar + legend */
+      margin: 0 6px 6px 6px;
+      background: var(--bg);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    svg { width: 100%; height: 100%; display: block; }
+
+    .link {
+      stroke: var(--link);
+      stroke-opacity: 0.45;
+      stroke-width: 1;
+    }
+    .node {
+      stroke: #fff;
+      stroke-width: 1px;
+    }
+    .node.division { fill: var(--division); }
+    .node.unit     { fill: var(--unit); }
+    .node.person   { fill: var(--person); }
+  .node.city     { fill: #000; }
+
+    .label {
+      font-size: 11px;
+      pointer-events: none;
+      fill: #333;
+      paint-order: stroke;
+      stroke: #fff;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    .label.division { font-weight: 600; font-size: 12px; }
+  .label.city { fill: #fff; font-weight: 700; font-size: 13px; }
+
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 360px;
+      display: none;
+      z-index: 10;
+    }
+    .tooltip .name { font-weight: 600; font-size: 13px; }
+    .tooltip .kv { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+  <!-- ====== Top Bar ====== -->
+  <div class="toolbar">
+    <h1>City Planning Network</h1>
+
+    <!-- Data is loaded automatically from the hosted CSV (no file picker required) -->
+
+    <!-- Optional: reset view -->
+    <button id="resetBtn" type="button">Reset Zoom</button>
+
+    <div class="spacer"></div>
+    <div class="status" id="status">Loading…</div>
+  </div>
+
+  <!-- ====== Legend ====== -->
+  <div class="legend">
+    <div><span class="dot" style="background: var(--division)"></span> Division</div>
+    <div><span class="dot" style="background: var(--unit)"></span> Unit</div>
+    <div><span class="dot" style="background: var(--person)"></span> Individual</div>
+    <div>Scroll to zoom • Drag background to pan • Drag nodes to reposition</div>
+  </div>
+
+  <!-- ====== Chart Container ====== -->
+  <div id="chart"></div>
+
+  <!-- ====== Tooltip ====== -->
+  <div id="tooltip" class="tooltip"></div>
+
+  <script>
+    // =========================================================
+    // Configuration
+    // =========================================================
+
+    // Your Windows path (auto-load attempt). Browsers usually block direct file access;
+    // the file picker below is the reliable fallback.
+    // Automatically load the CSV hosted alongside this page. Place the file at the
+    // same location as this HTML on GitHub Pages. Example filename:
+    // city_planning_contacts_division_unit.csv
+    const CSV_URL = 'city_planning_contacts_division_unit.csv';
+
+    // Force layout tuning (distances & repulsion by node type)
+    const FORCE = {
+      distancePersonToUnit: 30,
+      distanceUnitToDivision: 90,
+      distanceDivision: 160,
+      chargePerson: -18,
+      chargeUnit: -90,
+      chargeDivision: -160,
+      collidePerson: 6,
+      collideUnit: 14,
+      collideDivision: 24
+    };
+
+    // =========================================================
+    // DOM references
+    // =========================================================
+    const chartEl   = document.getElementById('chart');
+    const tooltipEl = document.getElementById('tooltip');
+    const statusEl  = document.getElementById('status');
+  // No file picker: data is fetched automatically from CSV_URL
+    const resetBtn  = document.getElementById('resetBtn');
+
+    // Quick runtime sanity check: if D3 failed to load (bad script tag or network),
+    // give a clear status message instead of confusing "failed to parse CSV" errors.
+    if (typeof d3 === 'undefined' || typeof d3.csvParse !== 'function') {
+      // Keep the page usable; inform the user and log details for debugging.
+      statusEl.textContent = 'Error: D3 library did not load. CSV parsing will fail.';
+      statusEl.style.color = '#b00020';
+      console.error('D3 is not available. Ensure the script tag uses src="https://d3js.org/d3.v7.min.js" and that the network allows fetching it.');
+    }
+
+    // =========================================================
+    // Utilities
+    // =========================================================
+    const esc = s =>
+      String(s ?? '').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    function setStatus(msg, isError = false) {
+      statusEl.textContent = msg;
+      statusEl.style.color = isError ? '#b00020' : 'var(--subtle)';
+    }
+
+    // Build graph data from rows
+    function buildGraph(rows) {
+      const nodes = [];
+      const links = [];
+      const byId  = new Map();
+
+
+      const idForDivision = d => `div:${d}`;
+      const idForUnit     = (d,u) => `unit:${d}|${u}`;
+
+      // Add node if not exists
+      function addNode(id, data) {
+        if (!byId.has(id)) {
+          byId.set(id, data);
+          nodes.push(data);
+        }
+        return byId.get(id);
+      }
+
+      // 1) Create Division and Unit nodes (deduped)
+      const seenDivisions = new Set();
+      const seenUnits = new Set();
+
+      for (const r of rows) {
+        const division = (r['Division'] || '').trim();
+        const unit     = (r['Unit']     || '').trim();
+        if (!division) continue;
+
+        if (!seenDivisions.has(division)) {
+          seenDivisions.add(division);
+          addNode(idForDivision(division), {
+            id:   idForDivision(division),
+            type: 'division',
+            name: division
+          });
+        }
+
+        if (unit && !seenUnits.has(division + '|' + unit)) {
+          seenUnits.add(division + '|' + unit);
+          const uid = idForUnit(division, unit);
+          addNode(uid, {
+            id: uid,
+            type: 'unit',
+            name: unit,
+            division
+          });
+          links.push({ source: uid, target: idForDivision(division) });
+        }
+      }
+
+      // 2) People nodes & links
+      let personIndex = 0;
+      for (const r of rows) {
+        const first    = (r['First Name']     || '').trim();
+        const last     = (r['Last Name']      || '').trim();
+        const title    = (r['Position/Title'] || '').trim();
+        const division = (r['Division']       || '').trim();
+        const unit     = (r['Unit']           || '').trim();
+        const phone    = (r['Phone Number']   || '').trim();
+        if (!division) continue; // must be under a Division
+
+        const personId = `person:${personIndex++}`;
+        addNode(personId, {
+          id:       personId,
+          type:     'person',
+          name:     (first || last) ? `${first} ${last}`.trim() : title || '(Unknown)',
+          firstName: first,
+          lastName:  last,
+          title,
+          division,
+          unit,
+          phone
+        });
+
+        if (unit) {
+          const uid = idForUnit(division, unit);
+          // ensure unit node exists even if CSV had odd gaps
+          if (!byId.has(uid)) {
+            addNode(uid, { id: uid, type:'unit', name: unit, division });
+            links.push({ source: uid, target: idForDivision(division) });
+          }
+          links.push({ source: personId, target: uid });
+        } else {
+          links.push({ source: personId, target: idForDivision(division) });
+        }
+      }
+
+      return { nodes, links };
+    }
+
+    // Render the force-directed network
+    function render(graph) {
+      // Clear previous SVG if any
+      d3.select(chartEl).selectAll('*').remove();
+
+      const width  = chartEl.clientWidth;
+      const height = chartEl.clientHeight;
+
+      // Base SVG with zoom/pan
+      const svg = d3.select('#chart')
+        .append('svg')
+        .attr('width',  width)
+        .attr('height', height);
+
+      const g = svg.append('g');
+
+      const zoom = d3.zoom()
+        .scaleExtent([0.2, 3])
+        .on('zoom', (ev) => g.attr('transform', ev.transform));
+
+      svg.call(zoom);
+
+      // Create links
+      const link = g.append('g')
+        .attr('stroke-width', 1)
+        .selectAll('line')
+        .data(graph.links)
+        .join('line')
+        .attr('class', 'link');
+
+      // Create nodes
+      const node = g.append('g')
+        .selectAll('circle')
+        .data(graph.nodes)
+        .join('circle')
+        .attr('class', d => `node ${d.type}`)
+        .attr('r', d => d.type === 'division' ? 14 : (d.type === 'unit' ? 9 : 4));
+
+      // Labels (Divisions & Units only)
+      const labels = g.append('g')
+        .selectAll('text')
+        .data(graph.nodes.filter(d => d.type !== 'person'))
+        .join('text')
+        .attr('class', d => `label ${d.type}`)
+        .attr('text-anchor', 'middle')
+  .attr('dy', d => d.type === 'division' ? -18 : -12)
+        .text(d => d.name);
+
+      // Tooltip handlers
+      node
+        .on('mouseover', (ev, d) => showTooltip(ev, d))
+        .on('mousemove', (ev) => moveTooltip(ev))
+        .on('mouseout', hideTooltip);
+
+      // Dragging
+      node.call(
+        d3.drag()
+          .on('start', (ev, d) => {
+            if (!ev.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x; d.fy = d.y;
+          })
+          .on('drag', (ev, d) => {
+            d.fx = ev.x; d.fy = ev.y;
+          })
+          .on('end', (ev, d) => {
+            if (!ev.active) simulation.alphaTarget(0);
+            d.fx = null; d.fy = null;
+          })
+      );
+
+      // Simulation
+      const nodesById = new Map(graph.nodes.map(d => [d.id, d]));
+      const simLinks = graph.links.map(d => ({ ...d }));
+
+      const simulation = d3.forceSimulation(graph.nodes)
+        .force('link', d3.forceLink(simLinks)
+          .id(d => d.id)
+          .distance(l => {
+            const s = nodesById.get(l.source.id || l.source);
+            const t = nodesById.get(l.target.id || l.target);
+            if (s.type === 'person' || t.type === 'person') return FORCE.distancePersonToUnit;
+            if (s.type === 'unit'   || t.type === 'unit')   return FORCE.distanceUnitToDivision;
+            return FORCE.distanceDivision;
+          })
+          .strength(0.5)
+        )
+        .force('charge', d3.forceManyBody().strength(d => {
+          if (d.type === 'person')   return FORCE.chargePerson;
+          if (d.type === 'unit')     return FORCE.chargeUnit;
+          return FORCE.chargeDivision;
+        }))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collision', d3.forceCollide().radius(d => {
+          if (d.type === 'division') return FORCE.collideDivision;
+          if (d.type === 'unit')     return FORCE.collideUnit;
+          return FORCE.collidePerson;
+        }).strength(0.7))
+        .on('tick', ticked);
+
+      function ticked() {
+        link
+          .attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
+
+        node
+          .attr('cx', d => d.x)
+          .attr('cy', d => d.y);
+
+        labels
+          .attr('x', d => d.x)
+          .attr('y', d => d.y);
+      }
+
+      // Reset zoom button
+      resetBtn.onclick = () => {
+        svg.transition().duration(400).call(
+          zoom.transform,
+          d3.zoomIdentity.translate(width / 2, height / 2).scale(1).translate(-width / 2, -height / 2)
+        );
+      };
+    }
+
+    // Tooltip helpers
+    function showTooltip(ev, d) {
+      if (d.type === 'person') {
+        tooltipEl.innerHTML =
+          `<div class="name">${esc(d.name)}</div>` +
+          (d.title    ? `<div class="kv">${esc(d.title)}</div>` : '') +
+          (d.unit     ? `<div class="kv"><b>Unit:</b> ${esc(d.unit)}</div>` : '') +
+          (d.division ? `<div class="kv"><b>Division:</b> ${esc(d.division)}</div>` : '') +
+          (d.phone    ? `<div class="kv"><b>Phone:</b> ${esc(d.phone)}</div>` : '');
+      } else {
+        const kind = d.type === 'division' ? 'Division' : 'Unit';
+        tooltipEl.innerHTML =
+          `<div class="name">${esc(d.name)}</div>` +
+          `<div class="kv"><b>${kind}:</b> ${esc(d.name)}</div>` +
+          (d.type === 'unit' && d.division ? `<div class="kv"><b>Division:</b> ${esc(d.division)}</div>` : '');
+      }
+      tooltipEl.style.display = 'block';
+      moveTooltip(ev);
+    }
+    function moveTooltip(ev) {
+      tooltipEl.style.left = (ev.pageX + 12) + 'px';
+      tooltipEl.style.top  = (ev.pageY + 12) + 'px';
+    }
+    function hideTooltip() {
+      tooltipEl.style.display = 'none';
+    }
+
+    // =========================================================
+    // Data loading
+    // =========================================================
+    async function loadFromUrl(url) {
+      // Use fetch so we can present clear HTTP errors and strip BOM before parsing.
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
+        const text = await resp.text();
+        const clean = text.replace(/^\uFEFF/, ''); // strip BOM if present
+        const rows = d3.csvParse(clean);
+        return rows;
+      } catch (e) {
+        throw new Error(`Failed to load CSV from ${url}: ${e.message}`);
+      }
+    }
+
+    function loadFromFileInput(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(reader.error);
+        reader.onload  = () => {
+          try {
+            const text = String(reader.result || '');
+            const clean = text.replace(/^\uFEFF/, '');
+            const rows = d3.csvParse(clean);
+            resolve(rows);
+          } catch (e) { reject(e); }
+        };
+        reader.readAsText(file, 'utf-8');
+      });
+    }
+
+    async function init() {
+      setStatus('Attempting to load CSV…');
+
+      // Try remote CSV (GitHub Pages) first if configured
+      if (CSV_URL) {
+        try {
+          setStatus(`Loading CSV from ${CSV_URL}…`);
+          const rows = await loadFromUrl(CSV_URL);
+          if (!rows || !rows.length) throw new Error('CSV loaded but is empty.');
+          setStatus('Loaded CSV from remote URL.');
+          render(buildGraph(rows));
+          return;
+        } catch (err) {
+          console.error(err);
+          setStatus(`Failed to load CSV from remote URL (${CSV_URL}). Falling back to local attempts.`, true);
+        }
+      }
+
+      // Next try the local file path (may be blocked by the browser)
+      try {
+        setStatus('Attempting to load from your Windows path…');
+        const rows = await loadFromUrl(AUTO_LOAD_FILE_URL);
+        if (!rows || !rows.length) throw new Error('CSV loaded but is empty.');
+        setStatus('Loaded from Windows path.');
+        render(buildGraph(rows));
+        return;
+      } catch (err) {
+        console.warn('Auto local load failed:', err);
+      }
+
+        // Loading failed — show a clear error. When hosting on GitHub Pages,
+        // ensure the CSV exists at the same path as this HTML file.
+        setStatus('Failed to load CSV. Ensure city_planning_contacts_division_unit.csv is hosted alongside this page.', true);
+    }
+      // (file picker removed)
+
+    // Handle resize (optional: you can re-render or leave as-is)
+    window.addEventListener('resize', () => {
+      // You could re-render here; omitted to keep physics stable while resizing.
+      // If you want, we can add a debounced re-render.
+    });
+
+    // Kick things off
+    init();
+  </script>
+</body>
+</html>
