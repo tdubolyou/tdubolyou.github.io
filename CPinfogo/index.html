@@ -156,12 +156,12 @@
     // Configuration
     // =========================================================
 
-    // Your Windows path (auto-load attempt). Browsers usually block direct file access;
-    // the file picker below is the reliable fallback.
-    // Automatically load the CSV hosted alongside this page. Place the file at the
-    // same location as this HTML on GitHub Pages. Example filename:
-    // city_planning_contacts_division_unit.csv
-    const CSV_URL = '../city_planning_contacts_division_unit.csv';
+  // When deployed to GitHub Pages (e.g. tdubolyou.github.io/CPinfogo) the CSV
+  // will be fetched relative to this HTML file. We compute an absolute URL
+  // from the current page location so both /CPinfogo/ and /CPinfogo/index.html
+  // hosting styles will work.
+  const CSV_FILENAME = 'city_planning_contacts_division_unit.csv';
+  const CSV_URL = new URL(CSV_FILENAME, window.location.href).href;
 
     // Force layout tuning (distances & repulsion by node type)
     const FORCE = {
@@ -482,36 +482,18 @@
     async function init() {
       setStatus('Attempting to load CSV…');
 
-      // Try remote CSV (GitHub Pages) first if configured
-      if (CSV_URL) {
-        try {
-          setStatus(`Loading CSV from ${CSV_URL}…`);
-          const rows = await loadFromUrl(CSV_URL);
-          if (!rows || !rows.length) throw new Error('CSV loaded but is empty.');
-          setStatus('Loaded CSV from remote URL.');
-          render(buildGraph(rows));
-          return;
-        } catch (err) {
-          console.error(err);
-          setStatus(`Failed to load CSV from remote URL (${CSV_URL}). Falling back to local attempts.`, true);
-        }
-      }
-
-      // Next try the local file path (may be blocked by the browser)
+      // Attempt to load the CSV hosted alongside this page (relative URL)
       try {
-        setStatus('Attempting to load from your Windows path…');
-        const rows = await loadFromUrl(AUTO_LOAD_FILE_URL);
+        setStatus(`Loading CSV from ${CSV_URL}…`);
+        const rows = await loadFromUrl(CSV_URL);
         if (!rows || !rows.length) throw new Error('CSV loaded but is empty.');
-        setStatus('Loaded from Windows path.');
+        setStatus('Loaded CSV.');
         render(buildGraph(rows));
         return;
       } catch (err) {
-        console.warn('Auto local load failed:', err);
+        console.error('Failed to load CSV:', err);
+        setStatus('Failed to load CSV. Ensure the CSV is hosted alongside this page.', true);
       }
-
-        // Loading failed — show a clear error. When hosting on GitHub Pages,
-        // ensure the CSV exists at the same path as this HTML file.
-        setStatus('Failed to load CSV. Ensure city_planning_contacts_division_unit.csv is hosted alongside this page.', true);
     }
       // (file picker removed)
 
