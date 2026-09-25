@@ -1,0 +1,269 @@
+{
+  "generated": "2026-09-21T17:44:44+00:00",
+  "crs": "EPSG:4326",
+  "bbox": [
+    -82.8,
+    42.0,
+    -76.4,
+    46.4
+  ],
+  "licence": "Open Government Licence \u2013 Ontario",
+  "layers": [
+    {
+      "id": "greenbelt_designation",
+      "role": "subject",
+      "format": "geojson",
+      "file": "greenbelt_designation.geojson",
+      "features": 90,
+      "geometry": "Polygon",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "greenbelt_outer",
+      "role": "keyline",
+      "format": "geojson",
+      "file": "greenbelt_outer.geojson",
+      "features": 1,
+      "geometry": "MultiPolygon",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "specialty_crop",
+      "role": "subject",
+      "format": "geojson",
+      "file": "specialty_crop.geojson",
+      "features": 4,
+      "geometry": "MultiPolygon",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "river_valley_connection",
+      "role": "subject",
+      "format": "geojson",
+      "file": "river_valley_connection.geojson",
+      "features": 21,
+      "geometry": "LineString",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "towns_villages",
+      "role": "subject",
+      "format": "geojson",
+      "file": "towns_villages.geojson",
+      "features": 38,
+      "geometry": "Polygon",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "muni_upper",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/muni_upper.pmtiles",
+      "sourceLayer": "muni_upper",
+      "features": 79,
+      "geometry": "MultiPolygon",
+      "simplify_m": 100.0
+    },
+    {
+      "id": "muni_lower",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/muni_lower.pmtiles",
+      "sourceLayer": "muni_lower",
+      "features": 493,
+      "geometry": "Polygon",
+      "simplify_m": 100.0
+    },
+    {
+      "id": "shoreline",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/shoreline.pmtiles",
+      "sourceLayer": "shoreline",
+      "features": 7100,
+      "geometry": "LineString",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "waterbody",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/waterbody.pmtiles",
+      "sourceLayer": "waterbody",
+      "features": 4175,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "watercourse",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/watercourse.pmtiles",
+      "sourceLayer": "watercourse",
+      "features": 55333,
+      "geometry": "MultiLineString",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "built_up",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/built_up.pmtiles",
+      "sourceLayer": "built_up",
+      "features": 23627,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "roads",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/roads.pmtiles",
+      "sourceLayer": "roads",
+      "features": 17227,
+      "geometry": "LineString",
+      "simplify_m": 25.0
+    },
+    {
+      "id": "greenbelt_hamlet",
+      "role": "subject",
+      "format": "geojson",
+      "file": "greenbelt_hamlet.geojson",
+      "features": 94,
+      "geometry": "Point",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "orm_land_use",
+      "role": "subject",
+      "format": "geojson",
+      "file": "orm_land_use.geojson",
+      "features": 585,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "lake_simcoe_paw",
+      "role": "subject",
+      "format": "geojson",
+      "file": "lake_simcoe_paw.geojson",
+      "features": 1,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "natural_heritage_system",
+      "role": "protected",
+      "format": "pmtiles",
+      "file": "tiles/natural_heritage_system.pmtiles",
+      "sourceLayer": "natural_heritage_system",
+      "features": 1358,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "conservation_authority",
+      "role": "protected",
+      "format": "pmtiles",
+      "file": "tiles/conservation_authority.pmtiles",
+      "sourceLayer": "conservation_authority",
+      "features": 32,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "ngo_nature_reserve",
+      "role": "protected",
+      "format": "geojson",
+      "file": "ngo_nature_reserve.geojson",
+      "features": 15,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "landform_conservation",
+      "role": "protected",
+      "format": "geojson",
+      "file": "landform_conservation.geojson",
+      "features": 244,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "ecoregion",
+      "role": "physical",
+      "format": "geojson",
+      "file": "ecoregion.geojson",
+      "features": 4,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "ecodistrict",
+      "role": "physical",
+      "format": "geojson",
+      "file": "ecodistrict.geojson",
+      "features": 33,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "source_protection",
+      "role": "physical",
+      "format": "geojson",
+      "file": "source_protection.geojson",
+      "features": 60,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "watershed_tertiary",
+      "role": "physical",
+      "format": "pmtiles",
+      "file": "tiles/watershed_tertiary.pmtiles",
+      "sourceLayer": "watershed_tertiary",
+      "features": 74,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "trails",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/trails.pmtiles",
+      "sourceLayer": "trails",
+      "features": 6234,
+      "geometry": "MultiLineString",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "aggregate_sites",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/aggregate_sites.pmtiles",
+      "sourceLayer": "aggregate_sites",
+      "features": 3442,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "wooded_area",
+      "role": "physical",
+      "format": "pmtiles",
+      "file": "tiles/wooded_area.pmtiles",
+      "sourceLayer": "wooded_area",
+      "features": 2095,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "places",
+      "role": "label",
+      "format": "geojson",
+      "file": "places.geojson",
+      "features": 124,
+      "geometry": "Point",
+      "simplify_m": 0.0
+    }
+  ]
+}

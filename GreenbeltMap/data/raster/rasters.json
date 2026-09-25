@@ -1,0 +1,41 @@
+{
+  "source": "GB_DEM_poster_32x24.tif",
+  "source_crs": "EPSG:3161",
+  "export_crs": "EPSG:3857",
+  "elevation_range_m": [
+    0,
+    541
+  ],
+  "vertical_exaggeration": 5.0,
+  "width_px": 4096,
+  "coordinates": [
+    [
+      -82.4040864,
+      45.5693506
+    ],
+    [
+      -77.23535,
+      45.5693506
+    ],
+    [
+      -77.23535,
+      42.6751035
+    ],
+    [
+      -82.4040864,
+      42.6751035
+    ]
+  ],
+  "layers": [
+    {
+      "id": "hillshade",
+      "file": "hillshade.png",
+      "label": "Hillshade"
+    },
+    {
+      "id": "relief",
+      "file": "relief.png",
+      "label": "Elevation tint"
+    }
+  ]
+}
