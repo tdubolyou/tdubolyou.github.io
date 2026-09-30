@@ -264,6 +264,15 @@
       "features": 124,
       "geometry": "Point",
       "simplify_m": 0.0
+    },
+    {
+      "id": "greenbelt_mask",
+      "role": "derived",
+      "format": "geojson",
+      "file": "greenbelt_mask.geojson",
+      "features": 1,
+      "geometry": "MultiPolygon",
+      "derived_from": "greenbelt_outer"
     }
   ]
 }
