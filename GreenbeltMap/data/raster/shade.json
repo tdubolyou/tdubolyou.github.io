@@ -1,0 +1,27 @@
+{
+  "source": "GB_DEM_poster_32x24.tif",
+  "file": "shade.png",
+  "width_px": 8000,
+  "height_px": 6242,
+  "vertical_exaggeration": 5.0,
+  "azimuth": 315,
+  "altitude": 45,
+  "coordinates": [
+    [
+      -82.4040864,
+      45.5693506
+    ],
+    [
+      -77.23535,
+      45.5693506
+    ],
+    [
+      -77.23535,
+      42.6751925
+    ],
+    [
+      -82.4040864,
+      42.6751925
+    ]
+  ]
+}
