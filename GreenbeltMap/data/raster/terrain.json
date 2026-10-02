@@ -1,0 +1,18 @@
+{
+  "source": "GB_DEM_poster_32x24.tif",
+  "encoding": "terrarium",
+  "tiles": "terrain/{z}/{x}/{y}.png",
+  "minzoom": 6,
+  "maxzoom": 11,
+  "tileSize": 256,
+  "bounds": [
+    -82.40409,
+    42.67537,
+    -77.23502,
+    45.56935
+  ],
+  "elevation_range_m": [
+    0.0,
+    539.379150390625
+  ]
+}
