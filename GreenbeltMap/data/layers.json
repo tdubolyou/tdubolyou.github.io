@@ -268,11 +268,12 @@
     {
       "id": "greenbelt_mask",
       "role": "derived",
-      "format": "geojson",
-      "file": "greenbelt_mask.geojson",
+      "format": "pmtiles",
+      "file": "tiles/greenbelt_mask.pmtiles",
+      "sourceLayer": "greenbelt_mask",
       "features": 1,
       "geometry": "MultiPolygon",
-      "derived_from": "greenbelt_outer"
+      "derived_from": "greenbelt_outer, built_up"
     }
   ]
 }

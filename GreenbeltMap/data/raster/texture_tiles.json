@@ -1,0 +1,14 @@
+{
+  "source": "buildings_map_frame.parquet",
+  "file": "tiles/texture.pmtiles",
+  "kind": "raster",
+  "minzoom": 8,
+  "maxzoom": 13,
+  "resolution_m": 12.0,
+  "bounds": [
+    -82.33081,
+    42.68175,
+    -77.15652,
+    45.61996
+  ]
+}
