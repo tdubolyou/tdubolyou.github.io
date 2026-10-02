@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T17:44:44+00:00",
+  "generated": "2026-10-02T01:29:27+00:00",
   "crs": "EPSG:4326",
   "bbox": [
     -82.8,
@@ -60,7 +60,7 @@
       "format": "pmtiles",
       "file": "tiles/muni_upper.pmtiles",
       "sourceLayer": "muni_upper",
-      "features": 79,
+      "features": 49,
       "geometry": "MultiPolygon",
       "simplify_m": 100.0
     },
@@ -70,8 +70,8 @@
       "format": "pmtiles",
       "file": "tiles/muni_lower.pmtiles",
       "sourceLayer": "muni_lower",
-      "features": 493,
-      "geometry": "Polygon",
+      "features": 577,
+      "geometry": "MultiPolygon",
       "simplify_m": 100.0
     },
     {
