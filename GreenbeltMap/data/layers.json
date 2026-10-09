@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-02T01:29:27+00:00",
+  "generated": "2026-10-09T02:43:25+00:00",
   "crs": "EPSG:4326",
   "bbox": [
     -82.8,
@@ -181,6 +181,15 @@
       "simplify_m": 50.0
     },
     {
+      "id": "indian_reserve",
+      "role": "context",
+      "format": "geojson",
+      "file": "indian_reserve.geojson",
+      "features": 91,
+      "geometry": "Polygon",
+      "simplify_m": 25.0
+    },
+    {
       "id": "landform_conservation",
       "role": "protected",
       "format": "geojson",
@@ -274,6 +283,24 @@
       "features": 1,
       "geometry": "MultiPolygon",
       "derived_from": "greenbelt_outer, built_up"
+    },
+    {
+      "id": "holland_marsh_mask",
+      "role": "derived",
+      "format": "geojson",
+      "file": "holland_marsh_mask.geojson",
+      "features": 1,
+      "geometry": "Polygon",
+      "derived_from": "specialty_crop (Holland Marsh)"
+    },
+    {
+      "id": "specialty_crop_mask",
+      "role": "derived",
+      "format": "geojson",
+      "file": "specialty_crop_mask.geojson",
+      "features": 1,
+      "geometry": "MultiPolygon",
+      "derived_from": "specialty_crop (all specialty crop areas)"
     }
   ]
 }
