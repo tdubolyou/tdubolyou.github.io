@@ -105,12 +105,22 @@
       "simplify_m": 50.0
     },
     {
-      "id": "built_up",
+      "id": "built_up_inside",
       "role": "context",
       "format": "pmtiles",
-      "file": "tiles/built_up.pmtiles",
-      "sourceLayer": "built_up",
-      "features": 23627,
+      "file": "tiles/built_up_inside.pmtiles",
+      "sourceLayer": "built_up_inside",
+      "features": 5030,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "built_up_outside",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/built_up_outside.pmtiles",
+      "sourceLayer": "built_up_outside",
+      "features": 21867,
       "geometry": "Polygon",
       "simplify_m": 50.0
     },
