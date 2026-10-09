@@ -282,7 +282,7 @@
       "sourceLayer": "greenbelt_mask",
       "features": 1,
       "geometry": "MultiPolygon",
-      "derived_from": "greenbelt_outer, built_up"
+      "derived_from": "greenbelt_outer"
     },
     {
       "id": "holland_marsh_mask",
