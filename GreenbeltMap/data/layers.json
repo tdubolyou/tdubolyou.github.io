@@ -85,23 +85,43 @@
       "simplify_m": 50.0
     },
     {
-      "id": "waterbody",
+      "id": "waterbody_inside",
       "role": "context",
       "format": "pmtiles",
-      "file": "tiles/waterbody.pmtiles",
-      "sourceLayer": "waterbody",
-      "features": 4175,
+      "file": "tiles/waterbody_inside.pmtiles",
+      "sourceLayer": "waterbody_inside",
+      "features": 796,
       "geometry": "Polygon",
       "simplify_m": 50.0
     },
     {
-      "id": "watercourse",
+      "id": "waterbody_outside",
       "role": "context",
       "format": "pmtiles",
-      "file": "tiles/watercourse.pmtiles",
-      "sourceLayer": "watercourse",
-      "features": 55333,
-      "geometry": "MultiLineString",
+      "file": "tiles/waterbody_outside.pmtiles",
+      "sourceLayer": "waterbody_outside",
+      "features": 4602,
+      "geometry": "Polygon",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "watercourse_inside",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/watercourse_inside.pmtiles",
+      "sourceLayer": "watercourse_inside",
+      "features": 3256,
+      "geometry": "LineString",
+      "simplify_m": 50.0
+    },
+    {
+      "id": "watercourse_outside",
+      "role": "context",
+      "format": "pmtiles",
+      "file": "tiles/watercourse_outside.pmtiles",
+      "sourceLayer": "watercourse_outside",
+      "features": 118214,
+      "geometry": "LineString",
       "simplify_m": 50.0
     },
     {
