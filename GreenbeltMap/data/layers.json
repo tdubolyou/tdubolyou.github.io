@@ -90,7 +90,7 @@
       "format": "pmtiles",
       "file": "tiles/waterbody_inside.pmtiles",
       "sourceLayer": "waterbody_inside",
-      "features": 796,
+      "features": 65,
       "geometry": "Polygon",
       "simplify_m": 50.0
     },
@@ -100,7 +100,7 @@
       "format": "pmtiles",
       "file": "tiles/waterbody_outside.pmtiles",
       "sourceLayer": "waterbody_outside",
-      "features": 4602,
+      "features": 4512,
       "geometry": "Polygon",
       "simplify_m": 50.0
     },
